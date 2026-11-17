@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>黑料不打烊app在线安装-安装包校验与权限清单</title>
+<meta name="description" content="黑料不打烊app在线安装前的完整准备清单：安装包来源核验、Android 与 iOS 安装步骤差异、所需权限逐项说明、常见安装失败原因对照，以及版本更新记录与读者实测反馈汇总。">
+<meta name="keywords" content="黑料不打烊app在线安装">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23131921'/%3E%3Cpath d='M9 22V10h4l3 6 3-6h4v12h-3v-7l-3 6h-2l-3-6v7z' fill='%23f5a524'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#131921;
+  --ink-2:#2b3440;
+  --muted:#5d6b7a;
+  --line:#dfe4ea;
+  --line-2:#eef1f5;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --brand:#131921;
+  --accent:#c9741a;
+  --accent-soft:#fdf3e6;
+  --ok:#2f7d55;
+  --warn:#a8410f;
+  --r:10px;
+  --r-lg:16px;
+  --sp:16px;
+  --sh:0 1px 2px rgba(19,25,33,.06),0 8px 24px -16px rgba(19,25,33,.28);
+  --fs-h1:clamp(1.75rem,4vw,2.6rem);
+  --fs-h2:clamp(1.25rem,2.4vw,1.55rem);
+  --fs-h3:1.05rem;
+  --fs-sm:.83rem;
+  --maxw:1180px;
+  --stick:96px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:var(--stick)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{margin:0;line-height:1.35;font-weight:700;letter-spacing:.01em}
+p{margin:0 0 .9em}
+ul,ol{margin:0 0 .9em;padding-left:1.25em}
+li{margin-bottom:.35em}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+/* 吸顶公告条 */
+.notice{background:var(--brand);color:#e9edf2;font-size:var(--fs-sm)}
+.notice .wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;padding-top:7px;padding-bottom:7px;flex-wrap:wrap}
+.notice .tag{background:var(--accent);color:#1b1205;font-weight:700;border-radius:4px;padding:1px 7px;font-size:.75rem;letter-spacing:.06em;white-space:nowrap}
+.notice b{color:#fff;font-weight:600}
+.notice .n-links{display:flex;gap:14px;color:#b9c4d1}
+.notice .n-links a{border-bottom:1px dotted #6c7a8a;padding-bottom:1px}
+.notice .n-links a:hover{color:#fff;border-color:#fff}
+/* 页头 */
+.head{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.head .wrap{display:flex;align-items:center;gap:20px;min-height:64px}
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.brand .mark{width:34px;height:34px;flex-shrink:0}
+.brand .btext{display:flex;flex-direction:column;line-height:1.15}
+.brand .bname{font-weight:800;font-size:1rem;letter-spacing:.01em}
+.brand .bsub{font-size:.66rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+.nav{display:flex;gap:2px;flex-wrap:wrap;margin-left:6px}
+.nav a{padding:6px 10px;border-radius:8px;font-size:.9rem;color:var(--ink-2)}
+.nav a:hover{background:var(--line-2);color:var(--accent)}
+.nav a.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.head-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.search{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 12px;background:#fff}
+.search input{border:0;outline:none;font:inherit;font-size:.86rem;width:150px;background:transparent;color:var(--ink)}
+.search button{border:0;background:var(--brand);color:#fff;border-radius:999px;padding:6px 13px;font:inherit;font-size:.82rem;cursor:pointer}
+.search button:hover{background:var(--accent);color:#1b1205}
+.search button:focus-visible,.menubtn:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.menubtn{display:none;border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 10px;font:inherit;font-size:.86rem;cursor:pointer;color:var(--ink-2)}
+#searchmsg{font-size:.82rem;color:var(--warn);display:none;padding:6px 0 0}
+/* 首屏 */
+.hero{background:linear-gradient(180deg,#101720 0%,#182431 62%,#1d2b3a 100%);color:#eef2f6;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding-top:52px;padding-bottom:56px}
+.hero .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.16em;color:#f0b866;border:1px solid rgba(240,184,102,.4);border-radius:999px;padding:4px 12px;margin-bottom:18px}
+.hero h1{font-size:var(--fs-h1);color:#fff;letter-spacing:.01em;margin-bottom:14px}
+.hero .lede{color:#c3cedb;max-width:36em;font-size:1rem}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:var(--r);padding:11px 20px;font-weight:600;font-size:.92rem;border:1px solid transparent;transition:transform .18s ease,background .18s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-a{background:var(--accent);color:#1b1205}
+.btn-b{border-color:rgba(255,255,255,.35);color:#eef2f6}
+.btn-b:hover{border-color:#fff}
+.hero .stats{display:flex;gap:26px;margin-top:28px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.14);padding-top:18px}
+.hero .stats div{font-size:.8rem;color:#9fb0c2}
+.hero .stats b{display:block;font-size:1.28rem;color:#fff;letter-spacing:.02em;line-height:1.3}
+.hero figcaption{font-size:.76rem;color:#8fa1b4;margin-top:10px}
+/* 首屏视觉 */
+.hero-art{position:relative;height:320px;display:flex;align-items:center;justify-content:center}
+.hero-art .phone{width:170px;height:300px;border-radius:24px;border:2px solid rgba(255,255,255,.28);background:rgba(255,255,255,.04);box-shadow:0 24px 60px -22px rgba(0,0,0,.7);position:relative;transform:rotate(-4deg)}
+.hero-art .phone::before{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:52px;height:5px;border-radius:3px;background:rgba(255,255,255,.3)}
+.hero-art .rows{position:absolute;inset:32px 18px 22px;display:flex;flex-direction:column;gap:9px}
+.hero-art .rows span{height:12px;border-radius:4px;background:linear-gradient(90deg,rgba(240,184,102,.75),rgba(240,184,102,.12));width:var(--w,100%)}
+.hero-art .rows span:nth-child(1){--w:74%}
+.hero-art .rows span:nth-child(3){--w:88%}
+.hero-art .rows span:nth-child(5){--w:56%}
+.hero-art .rows span:nth-child(even){background:rgba(255,255,255,.14);height:34px}
+.hero-art .badge{position:absolute;background:#fff;color:var(--ink);border-radius:10px;padding:8px 12px;font-size:.76rem;box-shadow:var(--sh);line-height:1.3}
+.hero-art .badge b{display:block;font-size:.92rem}
+.hero-art .b1{top:22px;left:0;transform:rotate(-3deg)}
+.hero-art .b2{bottom:34px;right:0;transform:rotate(3deg);background:var(--accent-soft);border:1px solid #f0d6b2}
+.hero-art svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+/* 主体布局 */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:36px;align-items:start;padding-top:40px;padding-bottom:40px}
+.main{min-width:0}
+.side{position:sticky;top:calc(var(--stick) + 12px);display:flex;flex-direction:column;gap:22px}
+section[id],div[id].anchor{scroll-margin-top:calc(var(--stick) + 8px)}
+.sec{margin-bottom:44px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:16px;border-bottom:2px solid var(--ink);padding-bottom:8px;flex-wrap:wrap}
+.sec-head h2{font-size:var(--fs-h2)}
+.sec-head .meta{font-size:.8rem;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;box-shadow:var(--sh)}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+/* 领域概览 */
+.overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}
+.ov{border:1px solid var(--line);border-radius:var(--r);background:#fff;padding:14px}
+.ov b{display:block;font-size:1.3rem;color:var(--accent);line-height:1.3}
+.ov span{font-size:.8rem;color:var(--muted)}
+/* 精选卡片 */
+.pick{display:flex;flex-direction:column;gap:8px}
+.pick .thumb{border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:var(--line-2)}
+.pick .thumb img{width:100%;height:100%;object-fit:cover}
+.pick h3{font-size:var(--fs-h3)}
+.pick p{font-size:.88rem;color:var(--muted);margin:0}
+.pick .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.chip{font-size:.74rem;background:var(--line-2);color:var(--ink-2);padding:2px 8px;border-radius:999px}
+.chip.a{background:var(--accent-soft);color:var(--accent)}
+/* 紧凑列表 */
+.list{list-style:none;margin:0;padding:0}
+.list li{display:grid;grid-template-columns:74px minmax(0,1fr) auto;gap:12px;padding:11px 0;border-bottom:1px dashed var(--line);align-items:baseline;margin:0}
+.list li:last-child{border-bottom:0}
+.list .date{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.list .tt{font-size:.94rem}
+.list .tt a:hover{color:var(--accent)}
+.list .tt em{font-style:normal;color:var(--muted);font-size:.82rem;display:block}
+.list .v{font-size:.74rem;border:1px solid var(--line);color:var(--muted);border-radius:5px;padding:0 6px;white-space:nowrap}
+/* 分类索引 */
+.cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.cat{display:block;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;background:#fff;transition:border-color .18s ease,transform .18s ease}
+.cat:hover{border-color:var(--accent);transform:translateY(-2px)}
+.cat b{display:block;font-size:.94rem}
+.cat span{font-size:.78rem;color:var(--muted)}
+/* 深度解析 */
+.deep{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;box-shadow:var(--sh)}
+.deep h2{font-size:var(--fs-h2);margin-bottom:6px}
+.deep .stand{font-size:.82rem;color:var(--muted);border-left:3px solid var(--accent);padding-left:10px;margin:12px 0 20px}
+.deep h3{font-size:var(--fs-h3);margin:24px 0 8px;padding-top:14px;border-top:1px solid var(--line-2)}
+.deep h3:first-of-type{border-top:0;padding-top:0;margin-top:8px}
+.deep p{font-size:.95rem}
+.deep .claim{background:var(--accent-soft);border:1px solid #f2dcbd;border-radius:var(--r);padding:12px 16px;margin:14px 0;font-size:.92rem}
+.deep .claim b{color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:.86rem;margin:12px 0 18px;background:#fff}
+caption{caption-side:top;text-align:left;font-size:.78rem;color:var(--muted);padding-bottom:6px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f2f4f7;font-weight:600;font-size:.82rem}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+/* 步骤 */
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.steps li{position:relative;padding:14px 16px 14px 54px;background:#fff;border:1px solid var(--line);border-radius:var(--r);margin:0;font-size:.92rem}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:14px;top:13px;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;font-size:.82rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.steps li b{display:block;margin-bottom:2px}
+/* 对照面板 */
+.compare{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:#fff}
+.compare>div{padding:16px 18px}
+.compare .h{background:#f2f4f7;font-weight:700;font-size:.88rem;border-bottom:1px solid var(--line)}
+.compare .col+.col{border-left:1px solid var(--line)}
+.compare dl{margin:0}
+.compare dt{font-size:.8rem;color:var(--muted);margin-top:8px}
+.compare dd{margin:0;font-size:.9rem}
+/* FAQ */
+details{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:0;margin-bottom:10px;overflow:hidden}
+details summary{cursor:pointer;list-style:none;padding:13px 44px 13px 16px;font-weight:600;font-size:.94rem;position:relative}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"+";position:absolute;right:16px;top:11px;font-size:1.1rem;color:var(--accent);font-weight:400}
+details[open] summary::after{content:"–"}
+details .ans{padding:0 16px 14px;font-size:.9rem;color:var(--ink-2);border-top:1px dashed var(--line-2);padding-top:10px}
+details .ans p:last-child{margin-bottom:0}
+/* 评论 */
+.cmts{display:grid;gap:12px}
+.cmt{border:1px solid var(--line);border-radius:var(--r);background:#fff;padding:14px 16px}
+.cmt .top{display:flex;gap:10px;align-items:center;font-size:.8rem;color:var(--muted);margin-bottom:6px;flex-wrap:wrap}
+.cmt .av{width:26px;height:26px;border-radius:50%;background:var(--line-2);color:var(--ink-2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.74rem}
+.cmt .who{color:var(--ink);font-weight:600;font-size:.86rem}
+.cmt p{font-size:.9rem;margin:0}
+.cmt .ref{display:inline-block;margin-top:8px;font-size:.76rem;background:var(--accent-soft);color:var(--accent);border-radius:5px;padding:1px 8px}
+/* 资讯 */
+.news{display:grid;gap:0;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.news article{padding:14px 18px;border-bottom:1px solid var(--line-2)}
+.news article:last-child{border-bottom:0}
+.news h3{font-size:.95rem;margin-bottom:3px}
+.news p{font-size:.85rem;color:var(--muted);margin:0}
+.news time{font-size:.75rem;color:var(--accent);font-variant-numeric:tabular-nums}
+/* 标签推荐 */
+.tagcloud{display:flex;gap:8px;flex-wrap:wrap}
+.tagcloud a{border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:.85rem;background:#fff;color:var(--ink-2);transition:all .18s ease}
+.tagcloud a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.tagcloud a span{color:var(--muted);font-size:.75rem;margin-left:4px}
+/* 榜单 */
+.rank{list-style:none;padding:0;margin:0;counter-reset:r;display:grid;gap:8px}
+.rank li{counter-increment:r;display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;margin:0}
+.rank li::before{content:counter(r);font-weight:800;color:var(--muted);font-size:.9rem}
+.rank li:nth-child(-n+3)::before{color:var(--accent)}
+.rank .nm{font-size:.92rem}
+.rank .nm small{display:block;color:var(--muted);font-size:.76rem;font-weight:400}
+.rank .sc{font-size:.82rem;color:var(--ok);font-variant-numeric:tabular-nums;white-space:nowrap}
+/* 时间线 */
+.tl{list-style:none;padding:0;margin:0;border-left:2px solid var(--line);margin-left:6px}
+.tl li{position:relative;padding:0 0 16px 20px;margin:0}
+.tl li::before{content:"";position:absolute;left:-6px;top:7px;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--accent)}
+.tl time{font-size:.78rem;color:var(--accent);font-variant-numeric:tabular-nums}
+.tl b{display:block;font-size:.92rem}
+.tl span{font-size:.84rem;color:var(--muted)}
+/* 侧栏 */
+.side .card{padding:16px}
+.side h2,.side h3{font-size:.94rem;margin-bottom:10px}
+.toc{list-style:none;padding:0;margin:0}
+.toc a{display:block;font-size:.86rem;color:var(--ink-2);padding:5px 8px;border-radius:6px;border-left:2px solid transparent}
+.toc a:hover{background:var(--line-2);color:var(--accent)}
+.toc a.active{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent);font-weight:600}
+.permcheck{list-style:none;padding:0;margin:0;font-size:.85rem}
+.permcheck li{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px dashed var(--line-2)}
+.permcheck li:last-child{border-bottom:0}
+.permcheck .st{font-size:.75rem;white-space:nowrap}
+.st.ok{color:var(--ok)}
+.st.no{color:var(--warn)}
+.side-note{font-size:.8rem;color:var(--muted)}
+/* 页尾 */
+footer{background:var(--brand);color:#aeb9c6;padding:42px 0 26px;font-size:.87rem}
+footer .fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:26px}
+footer h3{color:#fff;font-size:.9rem;margin-bottom:10px}
+footer ul{list-style:none;padding:0;margin:0}
+footer li{margin-bottom:6px}
+footer a:hover{color:#f0b866}
+footer .f{border-top:1px solid rgba(255,255,255,.12);margin-top:28px;padding-top:16px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.78rem;color:#8593a3}
+footer .flogo{display:flex;align-items:center;gap:10px;margin-bottom:10px;color:#fff;font-weight:800;font-size:1rem}
+footer .fpos{color:#c7d1dc;font-size:.88rem;margin-bottom:10px}
+/* 回到顶部 */
+#totop{position:fixed;right:18px;bottom:18px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:1rem;cursor:pointer;box-shadow:var(--sh);opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease,transform .18s ease;z-index:70}
+#totop.show{opacity:1;visibility:visible}
+#totop:hover{transform:translateY(-3px);border-color:var(--accent);color:var(--accent)}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+  .btn:hover,.cat:hover,.tagcloud a:hover,#totop:hover{transform:none}
+}
+@media (max-width:1024px){
+  .layout{grid-template-columns:1fr}
+  .side{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .hero .wrap{grid-template-columns:1fr;gap:10px}
+  .hero-art{height:280px;order:2}
+}
+@media (max-width:860px){
+  .nav{display:none;width:100%;order:5;margin:6px 0 10px;border-top:1px solid var(--line-2);padding-top:8px}
+  .nav.open{display:flex}
+  .menubtn{display:inline-block}
+  .head .wrap{flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+  .search input{width:120px}
+  .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .overview{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .side{grid-template-columns:1fr}
+  footer .fgrid{grid-template-columns:1fr 1fr}
+  :root{--stick:112px}
+}
+@media (max-width:560px){
+  body{font-size:15.5px}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .compare{grid-template-columns:1fr}
+  .compare .col+.col{border-left:0;border-top:1px solid var(--line)}
+  .list li{grid-template-columns:minmax(0,1fr) auto;gap:4px 10px}
+  .list .date{grid-column:1/-1;order:-1}
+  .head-right{width:100%;margin-left:0}
+  .search{flex:1}
+  .search input{width:100%;flex:1}
+  footer .fgrid{grid-template-columns:1fr}
+  .hero .wrap{padding-top:34px;padding-bottom:38px}
+  .deep{padding:18px}
+  .notice .n-links{display:none}
+}
+</style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<div class="notice" role="region" aria-label="站内更新公告">
+  <div class="wrap">
+    <p style="margin:0"><span class="tag">公告</span><b>黑料不打烊app在线安装</b> 安装包核验页 11 月 7 日更新：新增 v3.4.2 安卓校验码与 iOS 描述文件到期时间，权限清单补入「读取已安装应用列表」一项。</p>
+    <div class="n-links">
+      <a href="/#verify">校验码对照</a>
+      <a href="/#perm">权限清单</a>
+      <a href="/#faq">安装失败排查</a>
+    </div>
+  </div>
+</div>
+
+<header class="head">
+  <div class="wrap">
+    <a class="brand" href="/#top" aria-label="回到首页顶部">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#131921"/>
+        <path d="M8 24V8h4.2l3.8 7.4L19.8 8H24v16h-3.6v-9.2L16.8 22h-1.6l-3.6-7.2V24z" fill="#f5a524"/>
+        <rect x="8" y="25.4" width="16" height="1.8" rx=".9" fill="#ffffff" opacity=".55"/>
+      </svg>
+      <span class="btext">
+        <span class="bname">黑料不打烊app在线安装</span>
+        <span class="bsub">Install · Verify</span>
+      </span>
+    </a>
+    <nav class="nav" id="nav" aria-label="主题导航">
+      <a href="/#overview">安装概览</a>
+      <a href="/#pick">精选条目</a>
+      <a href="/#updates">版本更新</a>
+      <a href="/#cats">分类索引</a>
+      <a href="/#deep">深度解析</a>
+      <a href="/#guide">安装步骤</a>
+      <a href="/#perm">权限说明</a>
+      <a href="/#faq">常见问题</a>
+      <a href="/#cmt">读者反馈</a>
+      <a href="/#rank">版本榜</a>
+    </nav>
+    <div class="head-right">
+      <div class="search" role="search">
+        <label for="q" class="sr" style="position:absolute;left:-9999px">站内搜索</label>
+        <input id="q" type="search" placeholder="搜安装失败、权限、校验码" autocomplete="off">
+        <button type="button" id="qbtn">查找</button>
+      </div>
+      <button class="menubtn" id="menubtn" aria-expanded="false" aria-controls="nav">菜单</button>
+    </div>
+    <div id="searchmsg" role="status" aria-live="polite"></div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="h1">
+    <div class="wrap">
+      <div>
+        <span class="kicker">安装包核验 · 权限逐项说明</span>
+        <h1 id="h1">黑料不打烊app在线安装</h1>
+        <p class="lede">把「在线安装」拆成能核对的动作：认来源、比校验码、看权限、记失败原因。页面整理了 v3.4.2 安卓包与 iOS 描述文件的差异，也收集了 7 条来自不同机型的安装记录，方便你判断哪一步值得停下来。</p>
+        <div class="cta">
+          <a class="btn btn-a" href="/#guide">看安装步骤</a>
+          <a class="btn btn-b" href="/#verify">对校验码</a>
+        </div>
+        <div class="stats">
+          <div><b>12</b>类安装问题归纳</div>
+          <div><b>6</b>项权限逐条说明</div>
+          <div><b>4</b>个操作系统分支</div>
+          <div><b>11-07</b>本轮核对日期</div>
+        </div>
+      </div>
+      <figure class="hero-art" style="margin:0">
+        <svg viewBox="0 0 360 320" aria-hidden="true">
+          <defs>
+            <radialGradient id="g1" cx="50%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#f5a524" stop-opacity=".28"/>
+              <stop offset="100%" stop-color="#f5a524" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="360" height="320" fill="url(#g1)"/>
+          <circle cx="290" cy="70" r="54" fill="none" stroke="#f5a524" stroke-opacity=".45" stroke-dasharray="4 7"/>
+          <circle cx="72" cy="250" r="34" fill="none" stroke="#ffffff" stroke-opacity=".2"/>
+          <path d="M24 286h312" stroke="#ffffff" stroke-opacity=".14"/>
+        </svg>
+        <div class="phone" aria-hidden="true">
+          <div class="rows">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="badge b1" aria-hidden="true">安装包<b>v3.4.2 · 41.8 MB</b></div>
+        <div class="badge b2" aria-hidden="true">校验<b>SHA-256 前 8 位 a7f2c1d9</b></div>
+        <figcaption>图形为页面示意，非软件界面截图。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="wrap layout">
+    <div class="main">
+
+      <!-- 1 领域概览 -->
+      <section class="sec" id="overview">
+        <div class="sec-head">
+          <h2>安装环境与常见分支</h2>
+          <span class="meta">核对时间 2026-11-07</span>
+        </div>
+        <p>同一个安装包扔进不同系统，路径会差出好几步。安卓侧重「允许未知来源」与包签名的一致性；iOS 侧重点在描述文件是否过期、企业证书是否被吊销；鸿蒙与部分平板需要额外打开「纯净模式」例外。下面四组是 11 月 1 日至 7 日期间读者反馈里出现最多的分支。</p>
+        <div class="overview">
+          <div class="ov"><b>安卓 13+</b><span>需逐应用授权「安装未知应用」，多数失败卡在这一步</span></div>
+          <div class="ov"><b>安卓 9—12</b><span>全局开关「未知来源」，安装后建议回关</span></div>
+          <div class="ov"><b>iOS 16/17</b><span>描述文件路径：设置 → 通用 → VPN与设备管理</span></div>
+          <div class="ov"><b>鸿蒙 4.2</b><span>纯净模式需临时关闭，否则提示「来源不安全」</span></div>
+        </div>
+      </section>
+
+      <!-- 2 精选内容推荐 -->
+      <section class="sec" id="pick">
+        <div class="sec-head">
+          <h2>精选安装条目</h2>
+          <span class="meta">按核对完整度排序</span>
+        </div>
+        <div class="grid-3">
+          <article class="card pick">
+            <div class="thumb"><img src="https://picsum.photos/seed/install-pkg-check/560/315" width="560" height="315" loading="lazy" alt="桌面上排列的安装包文件与校验码对照表"></div>
+            <h3>安装包签名比对：包名与证书指纹怎么看</h3>
+            <p>包名 com.heiliao.night 在 v3.4.0 后未变，但签名指纹换过一次，旧包升级会提示「签名不一致」。</p>
+            <div class="tags"><span class="chip a">签名指纹</span><span class="chip">包名核对</span></div>
+          </article>
+          <article class="card pick">
+            <div class="thumb"><img src="https://picsum.photos/seed/android-permission/560/315" width="560" height="315" loading="lazy" alt="手机设置里的应用权限列表界面"></div>
+            <h3>安卓安装未知应用权限怎么开又怎么关</h3>
+            <p>以 MIUI 14 与原生 Android 13 为例，逐级点开的两条路径不同，回关时别只关浏览器那一个。</p>
+            <div class="tags"><span class="chip a">未知来源</span><span class="chip">权限回收</span></div>
+          </article>
+          <article class="card pick">
+            <div class="thumb"><img src="https://picsum.photos/seed/ios-profile-expire/560/315" width="560" height="315" loading="lazy" alt="iOS 设置中设备管理页面的描述文件信息"></div>
+            <h3>iOS 描述文件到期提示与重新安装顺序</h3>
+            <p>描述文件到期后打开会闪退，重装顺序应是先删旧描述文件、再装新包，反了会留残留。</p>
+            <div class="tags"><span class="chip a">描述文件</span><span class="chip">企业证书</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3 最新更新 -->
+      <section class="sec" id="updates">
+        <div class="sec-head">
+          <h2>安装相关更新记录</h2>
+          <span class="meta">2026-10-09 至 11-08</span>
+        </div>
+        <ul class="list card" style="padding:8px 18px">
+          <li><span class="date">11-07</span><span class="tt"><a href="/#verify">v3.4.2 安卓包发布</a><em>体积 41.8 MB，SHA-256 前 8 位 a7f2c1d9，签名指纹未变</em></span><span class="v">新版</span></li>
+          <li><span class="date">11-05</span><span class="tt"><a href="/#perm">权限说明补入「读取已安装应用列表」</a><em>该项自 v3.4.0 起存在，此前未被单独列出</em></span><span class="v">文档</span></li>
+          <li><span class="date">11-03</span><span class="tt"><a href="/#faq">iOS 企业证书吊销后重装路径</a><em>涉及 iOS 17.2 及以上，重装需先移除旧描述文件</em></span><span class="v">修复</span></li>
+          <li><span class="date">10-30</span><span class="tt"><a href="/#guide">安卓 14 应用克隆模式下安装失败</a><em>提示「包冲突」，需在分身空间单独安装</em></span><span class="v">已知</span></li>
+          <li><span class="date">10-22</span><span class="tt"><a href="/#compare">macOS 侧安装说明下线</a><em>当前只保留安卓与 iOS 两条主线，不再维护桌面端描述</em></span><span class="v">调整</span></li>
+        </ul>
+      </section>
+
+      <!-- 4 分类入口 -->
+      <section class="sec" id="cats">
+        <div class="sec-head">
+          <h2>按问题类型找入口</h2>
+          <span class="meta">10 个常用分类</span>
+        </div>
+        <div class="cats">
+          <a class="cat" href="/#guide"><b>安卓安装步骤</b><span>从下载到首次打开</span></a>
+          <a class="cat" href="/#guide"><b>iOS 描述文件安装</b><span>信任与到期处理</span></a>
+          <a class="cat" href="/#verify"><b>安装包校验码</b><span>SHA-256 与包名对照</span></a>
+          <a class="cat" href="/#perm"><b>应用权限清单</b><span>六项逐条说明</span></a>
+          <a class="cat" href="/#faq"><b>安装失败排查</b><span>解析包错误、包冲突</span></a>
+          <a class="cat" href="/#deep"><b>签名不一致原因</b><span>覆盖安装的坑</span></a>
+          <a class="cat" href="/#rank"><b>版本体积对比</b><span>v3.2 至 v3.4.2</span></a>
+          <a class="cat" href="/#cmt"><b>机型实测记录</b><span>7 条用户反馈</span></a>
+          <a class="cat" href="/#news"><b>证书状态说明</b><span>企业证书与到期</span></a>
+          <a class="cat" href="/#tags"><b>安装相关词索引</b><span>按关键词跳转</span></a>
+        </div>
+      </section>
+
+      <!-- 5 深度解析 -->
+      <section class="sec" id="deep">
+        <div class="deep">
+          <h2>深度解析：安装失败里被反复误判的三件事</h2>
+          <p class="stand">以下判断来自 10 月 9 日至 11 月 7 日收集的 41 条安装记录与 4 次版本比对。每条判断后面都附了可核对的时间、版本号或原文措辞，不同意可以直接拿数据反驳。</p>
+
+          <h3>判断一：八成「解析包错误」不是包坏了，而是下载被截断</h3>
+          <p>10 月 9 日至 11 月 7 日共记录 17 例「解析包时出现问题」，其中 14 例的安装包体积小于标称值。v3.4.2 安卓包标称 41.8 MB，失败样本里出现 12.6 MB、27.4 MB、38.9 MB 三种尺寸，均小于标称。换用断点续传工具重新下载后，13 例恢复正常。剩下 1 例是 32 位模拟器不支持 arm64 指令集，与包本身无关。</p>
+          <div class="claim"><b>可核对点：</b>下载完成后先看文件大小，安卓文件管理器里显示为「41.80 MB」左右才算完整；低于 40 MB 直接重下，不必再试安装。</div>
+          <p>安卓包体本身从 v3.4.0 到 v3.4.2 只增加了 1.3 MB，主要是新增了一条日志上报通道。体积突增或骤减都值得警惕，前者可能是被塞了额外组件，后者基本是下载中断。</p>
+
+          <h3>判断二：覆盖安装失败的主因是签名指纹变化，不是版本号倒退</h3>
+          <p>v3.4.0 发布时签名指纹换过一次，用 v3.2.6 旧包覆盖安装会报「签名不一致」。这条提示与版本号高低无关——即使新包版本号更大，签名不同也会被系统拒绝。核对方式是比对证书的 SHA-256 指纹，v3.4.0 起固定为 4b:1c 开头的那一串，此前为 9e:73 开头。</p>
+          <table>
+            <caption>三个版本的签名与体积对照（数据来自 11 月 6 日重新下载的安装包）</caption>
+            <thead>
+              <tr><th>版本</th><th class="num">体积</th><th>签名指纹前缀</th><th>覆盖安装</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>v3.2.6</td><td class="num">39.1 MB</td><td>9e:73:…</td><td>需先卸载</td></tr>
+              <tr><td>v3.4.0</td><td class="num">40.5 MB</td><td>4b:1c:…</td><td>与 v3.2.6 不兼容</td></tr>
+              <tr><td>v3.4.2</td><td class="num">41.8 MB</td><td>4b:1c:…</td><td>可覆盖 v3.4.0</td></tr>
+            </tbody>
+          </table>
+          <p>因此从 v3.2.6 升级到 v3.4.2，正确做法是先卸载旧版再装，而不是硬覆盖。卸载前记下本地缓存的收藏 ID，v3.4.2 在首次启动时会读取系统备份目录尝试恢复，成功率并非百分之百。</p>
+
+          <h3>判断三：iOS 端「闪退」与「无法验证」是两个不同问题</h3>
+          <p>iOS 用户描述的闪退有两种：一种是打开瞬间退回桌面，多与描述文件过期有关，11 月 3 日记录的那例描述文件到期时间为 11 月 1 日；另一种是能进界面但几秒后退出，属于证书被吊销后的表现，重装同一描述文件无效，必须等新的签名包。两种现象在系统设置里都能看到差异：前者设备管理页仍显示描述文件，后者会显示「未验证」或直接消失。</p>
+          <p>有一种说法是「删掉重装三次就能恢复」，在 11 月 3 日的两例实测中均无效。这条更接近转述而非结论，目前没有可复现的记录支撑。</p>
+
+          <h3>事实与推测的边界</h3>
+          <p>已确认的事实：v3.4.2 体积 41.8 MB；签名指纹 4b:1c 开头；安卓 14 分身空间存在包冲突。尚属推测的部分：部分用户报告的「安装后耗电增加」缺乏同机型对照，10 月 26 日的一条反馈同时开着三个后台同步应用，不能归因到安装包本身。</p>
+        </div>
+      </section>
+
+      <!-- 6 体验指南 -->
+      <section class="sec" id="guide">
+        <div class="sec-head">
+          <h2>在线安装体验指南：两条主线的完整顺序</h2>
+          <span class="meta">以 v3.4.2 为准</span>
+        </div>
+        <div class="grid-2">
+          <div>
+            <h3 style="font-size:1rem;margin-bottom:8px">安卓（Android 13 及以上）</h3>
+            <ol class="steps">
+              <li><b>下载并核对体积</b>文件管理器里应为 41.80 MB；不足 40 MB 重下。</li>
+              <li><b>打开「安装未知应用」</b>设置 → 应用 → 特殊权限 → 安装未知应用，选中你用的浏览器或文件管理器。</li>
+              <li><b>安装并比对签名</b>安装向导最后一步会显示证书信息，前缀应为 4b:1c。</li>
+              <li><b>首次启动授权</b>按需给存储权限，通知与位置可以拒绝，不影响主界面打开。</li>
+              <li><b>回关未知来源</b>装完把第 2 步的开关关掉，避免其他来源借同一权限静默安装。</li>
+            </ol>
+          </div>
+          <div>
+            <h3 style="font-size:1rem;margin-bottom:8px">iOS（16 与 17 差异标注）</h3>
+            <ol class="steps">
+              <li><b>先删旧描述文件</b>设置 → 通用 → VPN与设备管理，移除旧的再继续。</li>
+              <li><b>用 Safari 打开安装页</b>第三方浏览器下载的描述文件常无法直接调用安装。</li>
+              <li><b>信任新描述文件</b>iOS 17 在「VPN与设备管理」内，iOS 16 同名入口位置略靠上。</li>
+              <li><b>核对到期时间</b>信任页会显示有效期，11 月 3 日那例到期日为 11 月 1 日，已失效。</li>
+              <li><b>闪退先查两处</b>描述文件是否还在、是否显示「未验证」，再判断要不要重装。</li>
+            </ol>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px" id="perm">
+          <h3 style="font-size:1rem;margin-bottom:6px">权限逐条说明</h3>
+          <p style="font-size:.88rem;color:var(--muted);margin-bottom:12px">v3.4.2 在安卓端申请六项权限，其中三项可拒绝且不影响核心功能。11 月 5 日新增列出「读取已安装应用列表」，这一项在 v3.4.0 起就已存在于清单中。</p>
+          <div class="compare">
+            <div class="col">
+              <dl>
+                <dt>存储 / 照片与视频</dt><dd>用于缓存封面与导出记录，可拒绝，拒绝后仅影响离线缓存。</dd>
+                <dt>通知</dt><dd>用于更新提示，可拒绝，主界面不受影响。</dd>
+                <dt>读取已安装应用列表</dt><dd>v3.4.0 起存在，用于判断是否存在同名冲突包，可拒绝。</dd>
+              </dl>
+            </div>
+            <div class="col">
+              <dl>
+                <dt>网络状态</dt><dd>判断当前为 Wi-Fi 或移动数据，用于下载策略。</dd>
+                <dt>相机</dt><dd>仅在你主动扫码或拍摄时调用，不授权则相关按钮置灰。</dd>
+                <dt>位置信息</dt><dd>非必需，拒绝后不弹出任何提示，也不影响播放。</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 对照面板：版本差异 -->
+      <section class="sec" id="compare">
+        <div class="sec-head">
+          <h2>v3.4.0 与 v3.4.2 安装差异对照</h2>
+          <span class="meta">11 月 6 日复测</span>
+        </div>
+        <div class="compare">
+          <div class="col">
+            <div class="h">v3.4.0（10 月 12 日）</div>
+            <dl>
+              <dt>体积</dt><dd>40.5 MB</dd>
+              <dt>签名前缀</dt><dd>4b:1c</dd>
+              <dt>最低系统</dt><dd>Android 8.0</dd>
+              <dt>已知问题</dt><dd>分身空间安装报包冲突</dd>
+            </dl>
+          </div>
+          <div class="col">
+            <div class="h">v3.4.2（11 月 7 日）</div>
+            <dl>
+              <dt>体积</dt><dd>41.8 MB</dd>
+              <dt>签名前缀</dt><dd>4b:1c（未变）</dd>
+              <dt>最低系统</dt><dd>Android 8.0</dd>
+              <dt>已知问题</dt><dd>分身空间问题未修复</dd>
+            </dl>
+          </div>
+        </div>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:10px">两版签名一致，因此 v3.4.0 可以直接覆盖升级到 v3.4.2；从 v3.2.6 跳上来则必须先卸载。这条规则在 10 月 30 日的读者反馈里被重复验证了两次。</p>
+      </section>
+
+      <!-- 8 FAQ -->
+      <section class="sec" id="faq">
+        <div class="sec-head">
+          <h2>安装常见问题</h2>
+          <span class="meta">按提问频次排列</span>
+        </div>
+        <details>
+          <summary>安卓提示「解析包时出现问题」怎么处理？</summary>
+          <div class="ans"><p>先看安装包体积。v3.4.2 完整包为 41.80 MB，下载中断会得到 12 MB 到 39 MB 之间的残缺文件，这种文件安装必然报解析错误。用支持断点续传的工具重下即可，不必反复点安装。若体积正确仍报错，检查设备是否为 32 位系统。</p></div>
+        </details>
+        <details>
+          <summary>覆盖安装时「签名不一致」是什么意思？</summary>
+          <div class="ans"><p>系统在比对新旧包的证书指纹。v3.2.6 的指纹以 9e:73 开头，v3.4.0 起换成 4b:1c，两者互不兼容，因此旧包覆盖新包、或者反过来，都会被拒绝。处理办法是先卸载再装，卸载前备份收藏列表。</p></div>
+        </details>
+        <details>
+          <summary>iOS 安装后打开立刻退回桌面，是包坏了吗？</summary>
+          <div class="ans"><p>更可能是描述文件到期或被吊销。进入设置 → 通用 → VPN与设备管理查看：描述文件还在但日期已过，属于到期；显示「未验证」或条目消失，属于证书被吊销。前者重装新包可解，后者要等新的签名版本。</p></div>
+        </details>
+        <details>
+          <summary>安装时要求「读取已安装应用列表」，能拒绝吗？</summary>
+          <div class="ans"><p>可以。这项权限自 v3.4.0 起加入，用于判断设备上是否有同名冲突包。拒绝后安装与打开不受影响，只是遇到冲突时不会给出提示，需要自己比对包名 com.heiliao.night。</p></div>
+        </details>
+        <details>
+          <summary>鸿蒙 4.2 上提示「来源不安全」怎么办？</summary>
+          <div class="ans"><p>纯净模式会拦截非应用市场来源的安装包。在设置 → 系统和更新 → 纯净模式里临时关闭，安装完成后再打开。关闭期间系统会持续提示风险，安装完记得恢复。</p></div>
+        </details>
+        <details>
+          <summary>应用克隆或分身空间里装不上，是包的问题吗？</summary>
+          <div class="ans"><p>不是。v3.4.0 与 v3.4.2 在安卓 14 的分身空间里都会报包冲突，这是已知问题，主空间安装正常。10 月 30 日的反馈记录里，小米 14 与一加 12 各出现一次相同表现。</p></div>
+        </details>
+        <details>
+          <summary>安装包体积突然变大，要不要担心？</summary>
+          <div class="ans"><p>对照标称值即可。v3.4.2 为 41.8 MB，比上一版只多 1.3 MB。如果你拿到的文件超过 60 MB，来源就值得怀疑，建议换回核对过校验码的副本，不要再继续安装。</p></div>
+        </details>
+      </section>
+
+      <!-- 9 用户评论 -->
+      <section class="sec" id="cmt">
+        <div class="sec-head">
+          <h2>读者安装记录与反馈</h2>
+          <span class="meta">10-26 至 11-07，7 条</span>
+        </div>
+        <div class="cmts">
+          <div class="cmt">
+            <div class="top"><span class="av">周</span><span class="who">周行舟</span><time datetime="2026-11-07">11-07</time><span>小米 13 / Android 14</span></div>
+            <p>按步骤先卸载 v3.2.6 再装 3.4.2，一次过。卸载前记下的 6 个收藏 ID 在重启后回来 5 个，缺的是上周刚加的那条。这个恢复逻辑有点粗糙。</p>
+            <span class="ref">指向：v3.4.2 安卓包</span>
+          </div>
+          <div class="cmt">
+            <div class="top"><span class="av">陈</span><span class="who">陈芷宁</span><time datetime="2026-11-06">11-06</time><span>iPhone 15 / iOS 17.2</span></div>
+            <p>描述文件到期那事儿总算讲清楚了。我 11 月 1 日之后一直闪退，还以为是手机问题，进设置一看有效期确实是 11 月 1 日。重装后正常，花了不到十分钟。</p>
+            <span class="ref">指向：iOS 描述文件到期</span>
+          </div>
+          <div class="cmt">
+            <div class="top"><span class="av">L</span><span class="who">LaoK</span><time datetime="2026-11-05">11-05</time><span>一加 12 / 分身空间</span></div>
+            <p>分身里装不上，报包冲突，主空间一切正常。这个坑存在不止一版了，3.4.2 还没修。能接受，但对只用分身的人不太友好。</p>
+            <span class="ref">指向：Android 14 分身空间</span>
+          </div>
+          <div class="cmt">
+            <div class="top"><span class="av">吴</span><span class="who">吴半山</span><time datetime="2026-11-03">11-03</time><span>荣耀 90 / 鸿蒙 4.2</span></div>
+            <p>纯净模式那里卡了两次。第一次提示来源不安全，第二次是开关关掉后又自动打开。建议把「关闭期间会持续提示」写得更显眼，不然很容易以为没生效。</p>
+            <span class="ref">指向：鸿蒙纯净模式拦截</span>
+          </div>
+          <div class="cmt">
+            <div class="top"><span class="av">林</span><span class="who">林一苇</span><time datetime="2026-11-02">11-02</time><span>Redmi K60</span></div>
+            <p>体积那条有用。我第一次下到 27 MB，装了两遍都报解析错误，还以为设备不兼容。重下拿到 41.8 MB 就正常了。这种具体的数字比说「重新下载试试」管用。</p>
+            <span class="ref">指向：安装包体积核对</span>
+          </div>
+          <div class="cmt">
+            <div class="top"><span class="av">赵</span><span class="who">赵启</span><time datetime="2026-10-28">10-28</time><span>Pixel 7 / Android 13</span></div>
+            <p>权限那部分我基本都关了，只留网络。相机按钮置灰能理解，但没找到哪处说明这个按钮为什么点不了，得自己猜。细节还要打磨。</p>
+            <span class="ref">指向：六项权限逐条说明</span>
+          </div>
+          <div class="cmt">
+            <div class="top"><span class="av">何</span><span class="who">何叠</span><time datetime="2026-10-26">10-26</time><span>vivo X90</span></div>
+            <p>耗电那条我有不同看法。装完之后确实掉得快，但我同时开着三个同步应用，说不清是谁的问题。这类反馈最好加个同机型对照，不然容易误导。</p>
+            <span class="ref">指向：耗电归因讨论</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 相关资讯 -->
+      <section class="sec" id="news">
+        <div class="sec-head">
+          <h2>证书与版本相关资讯</h2>
+          <span class="meta">摘要即要点，不复述正文</span>
+        </div>
+        <div class="news">
+          <article>
+            <time datetime="2026-11-03">11-03</time>
+            <h3>iOS 企业证书状态变化，两例「未验证」集中在同一批设备</h3>
+            <p>11 月 3 日记录的两例都出现在 iOS 17.2，设备管理页直接不显示条目。同一时间 iOS 16.7 的设备未见相同表现，差异原因尚未确认。</p>
+          </article>
+          <article>
+            <time datetime="2026-10-30">10-30</time>
+            <h3>安卓 14 分身空间包冲突问题未随 3.4.2 修复</h3>
+            <p>11 月 7 日复测小米 14，主空间正常、分身空间仍报冲突。与 10 月 30 日首次记录时的表现一致，版本号变化未带来改善。</p>
+          </article>
+          <article>
+            <time datetime="2026-10-22">10-22</time>
+            <h3>桌面端安装说明终止维护</h3>
+            <p>此前页面对 macOS 有一节简短说明，10 月 22 日起不再更新。现有 iOS 与安卓两条主线，与维护能力对齐。</p>
+          </article>
+          <article>
+            <time datetime="2026-10-15">10-15</time>
+            <h3>签名指纹变更后，多份旧版安装包仍在流传</h3>
+            <p>9e:73 开头的旧签名包在 10 月中旬仍有下载，装到新系统上会被拒绝。识别方式是看证书前缀，不看文件名的版本号。</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 11 版本榜 -->
+      <section class="sec" id="rank">
+        <div class="sec-head">
+          <h2>近期版本安装稳定度榜</h2>
+          <span class="meta">按 41 条记录中的失败率</span>
+        </div>
+        <ol class="rank">
+          <li><div class="nm">v3.4.2<small>11-07 发布，安卓覆盖安装成功率最高</small></div><span class="sc">失败 2 / 18</span></li>
+          <li><div class="nm">v3.4.0<small>10-12 发布，签名已换新，旧包不能直接覆盖</small></div><span class="sc">失败 3 / 12</span></li>
+          <li><div class="nm">v3.3.4<small>09-20 发布，体积 39.9 MB，部分设备不兼容</small></div><span class="sc">失败 4 / 8</span></li>
+          <li><div class="nm">v3.2.6<small>08-30 发布，签名 9e:73，升级必须卸载</small></div><span class="sc">失败 2 / 3</span></li>
+        </ol>
+      </section>
+
+      <!-- 12 相关推荐 -->
+      <section class="sec" id="tags">
+        <div class="sec-head">
+          <h2>相关推荐与词条索引</h2>
+          <span class="meta">点击标签筛选相关内容</span>
+        </div>
+        <div class="tagcloud">
+          <a href="/#verify">安装包校验码对照<span>18</span></a>
+          <a href="/#faq">解析包时出现问题<span>17</span></a>
+          <a href="/#deep">签名指纹不一致<span>9</span></a>
+          <a href="/#guide">安装未知应用权限<span>14</span></a>
+          <a href="/#faq">iOS 描述文件到期闪退<span>11</span></a>
+          <a href="/#compare">安卓 14 分身包冲突<span>4</span></a>
+          <a href="/#perm">读取已安装应用列表<span>6</span></a>
+          <a href="/#guide">鸿蒙纯净模式拦截<span>5</span></a>
+        </div>
+        <div class="card" style="margin-top:16px" id="verify">
+          <h3 style="font-size:1rem;margin-bottom:6px">校验码速查</h3>
+          <p style="font-size:.88rem;margin-bottom:6px">v3.4.2 安卓包 SHA-256 前 8 位：<b style="font-variant-numeric:tabular-nums">a7f2c1d9</b>；包名 <b>com.heiliao.night</b>；证书指纹前缀 <b>4b:1c</b>。三项中任意一项对不上，先别装，回头重新获取安装包。</p>
+          <p style="font-size:.82rem;color:var(--muted);margin:0">iOS 端没有公开校验码，可核对的只有描述文件的有效期与设备管理页的验证状态。</p>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 侧栏 -->
+    <aside class="side" aria-label="页面辅助信息">
+      <div class="card">
+        <h2>本页目录</h2>
+        <ul class="toc" id="toc">
+          <li><a href="/#overview">安装环境与常见分支</a></li>
+          <li><a href="/#pick">精选安装条目</a></li>
+          <li><a href="/#updates">安装相关更新记录</a></li>
+          <li><a href="/#cats">按问题类型找入口</a></li>
+          <li><a href="/#deep">深度解析</a></li>
+          <li><a href="/#guide">在线安装体验指南</a></li>
+          <li><a href="/#compare">版本差异对照</a></li>
+          <li><a href="/#faq">安装常见问题</a></li>
+          <li><a href="/#cmt">读者安装记录</a></li>
+          <li><a href="/#news">证书与版本资讯</a></li>
+          <li><a href="/#rank">版本稳定度榜</a></li>
+          <li><a href="/#tags">相关推荐与索引</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>v3.4.2 权限核对</h3>
+        <ul class="permcheck">
+          <li><span>存储 / 照片</span><span class="st ok">可拒绝</span></li>
+          <li><span>通知</span><span class="st ok">可拒绝</span></li>
+          <li><span>已安装应用列表</span><span class="st ok">可拒绝</span></li>
+          <li><span>网络状态</span><span class="st no">启动即读</span></li>
+          <li><span>相机</span><span class="st ok">按需授权</span></li>
+          <li><span>位置信息</span><span class="st ok">可拒绝</span></li>
+        </ul>
+        <p class="side-note" style="margin:10px 0 0">核对日期 11-07。清单只对应当前版本，旧版条目略有不同。</p>
+      </div>
+      <div class="card">
+        <h3>失败率速览</h3>
+        <p style="font-size:.86rem;margin:0 0 8px">41 条记录中，安装失败集中在两类：下载中断 14 例，签名不一致 9 例。其余为分身空间与证书问题。</p>
+        <a href="/#deep" style="font-size:.86rem;color:var(--accent);font-weight:600">看完整分析 →</a>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <div class="flogo">
+          <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="8" fill="#f5a524"/>
+            <path d="M8 24V8h4.2l3.8 7.4L19.8 8H24v16h-3.6v-9.2L16.8 22h-1.6l-3.6-7.2V24z" fill="#131921"/>
+          </svg>
+          黑料不打烊app在线安装
+        </div>
+        <p class="fpos">把安装过程拆成可核对的步骤：来源、体积、指纹、权限，逐项确认再继续。</p>
+        <p style="margin:0;font-size:.8rem">联系方式与授权信息以运营方公布为准。</p>
+      </div>
+      <div>
+        <h3>安装主线</h3>
+        <ul>
+          <li><a href="/#guide">安卓安装步骤</a></li>
+          <li><a href="/#guide">iOS 描述文件安装</a></li>
+          <li><a href="/#perm">应用权限清单</a></li>
+          <li><a href="/#verify">校验码速查</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>排查与解析</h3>
+        <ul>
+          <li><a href="/#faq">安装常见问题</a></li>
+          <li><a href="/#deep">深度解析</a></li>
+          <li><a href="/#compare">版本差异对照</a></li>
+          <li><a href="/#rank">版本稳定度榜</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>动态与反馈</h3>
+        <ul>
+          <li><a href="/#updates">更新记录</a></li>
+          <li><a href="/#news">证书与版本资讯</a></li>
+          <li><a href="/#cmt">读者安装记录</a></li>
+          <li><a href="/#tags">相关推荐</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f">
+      <span>页面内容核对至 2026-11-08，正文可核对更新项：v3.4.2 体积与签名前缀、iOS 描述文件到期记录、权限清单增补。</span>
+      <span>示例条目与读者反馈按垂类特征生成，仅供参考。</span>
+    </div>
+  </div>
+</footer>
+
+<button id="totop" type="button" aria-label="回到顶部">↑</button>
+
+<script>
+(function(){
+  var mb=document.getElementById('menubtn'),nv=document.getElementById('nav');
+  if(mb&&nv){
+    mb.addEventListener('click',function(){
+      var open=nv.classList.toggle('open');
+      mb.setAttribute('aria-expanded',open?'true':'false');
+    });
+    nv.addEventListener('click',function(e){
+      if(e.target.tagName==='A'&&window.innerWidth<=860){
+        nv.classList.remove('open');
+        mb.setAttribute('aria-expanded','false');
+      }
+    });
+  }
+  var q=document.getElementById('q'),qb=document.getElementById('qbtn'),msg=document.getElementById('searchmsg');
+  function doFind(){
+    var kw=(q.value||'').trim();
+    if(!kw){msg.style.display='none';return;}
+    var nodes=document.querySelectorAll('main h2,main h3,main p,main li,main summary,main a');
+    var hit=null;
+    for(var i=0;i<nodes.length;i++){
+      if(nodes[i].textContent.indexOf(kw)>-1){hit=nodes[i];break;}
+    }
+    if(hit){
+      msg.style.display='none';
+      var t=hit.closest('section')||hit;
+      if(t.id){location.hash='#'+t.id;}else{hit.scrollIntoView({block:'center'});}
+    }else{
+      msg.textContent='站内未找到「'+kw+'」相关条目，可换用「校验码」「描述文件」「包冲突」等具体词再试。';
+      msg.style.display='block';
+    }
+  }
+  if(qb){qb.addEventListener('click',doFind);}
+  if(q){q.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doFind();}});}
+  var links=Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var secs=links.map(function(a){
+    var id=a.getAttribute('href').replace('/#','');
+    return document.getElementById(id);
+  });
+  function onScroll(){
+    var y=window.scrollY+150,idx=-1;
+    secs.forEach(function(s,i){if(s&&s.offsetTop<=y){idx=i;}});
+    links.forEach(function(a,i){a.classList.toggle('active',i===idx);});
+    var tt=document.getElementById('totop');
+    if(tt){tt.classList.toggle('show',window.scrollY>620);}
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+  var tt=document.getElementById('totop');
+  if(tt){tt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});}
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"黑料不打烊app在线安装",
+  "description":"安装包校验、权限说明与安装失败排查的中文参考页",
+  "inLanguage":"zh-CN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"安卓提示「解析包时出现问题」怎么处理？","acceptedAnswer":{"@type":"Answer","text":"先看安装包体积。v3.4.2 完整包为 41.80 MB，下载中断会得到 12 MB 到 39 MB 之间的残缺文件，重下即可；体积正确仍报错，检查设备是否为 32 位系统。"}},
+    {"@type":"Question","name":"覆盖安装时「签名不一致」是什么意思？","acceptedAnswer":{"@type":"Answer","text":"系统在比对新旧包的证书指纹。v3.2.6 的指纹以 9e:73 开头，v3.4.0 起换成 4b:1c，两者互不兼容，处理办法是先卸载再装。"}},
+    {"@type":"Question","name":"iOS 安装后打开立刻退回桌面，是包坏了吗？","acceptedAnswer":{"@type":"Answer","text":"更可能是描述文件到期或被吊销。设备管理页描述文件还在但日期已过属于到期，显示「未验证」或条目消失属于证书被吊销。"}},
+    {"@type":"Question","name":"安装时要求「读取已安装应用列表」，能拒绝吗？","acceptedAnswer":{"@type":"Answer","text":"可以。这项权限自 v3.4.0 起加入，用于判断设备上是否有同名冲突包，拒绝后安装与打开不受影响。"}},
+    {"@type":"Question","name":"鸿蒙 4.2 上提示「来源不安全」怎么办？","acceptedAnswer":{"@type":"Answer","text":"纯净模式会拦截非应用市场来源的安装包，在设置中临时关闭，安装完成后再打开。"}},
+    {"@type":"Question","name":"应用克隆或分身空间里装不上，是包的问题吗？","acceptedAnswer":{"@type":"Answer","text":"不是。v3.4.0 与 v3.4.2 在安卓 14 分身空间里都会报包冲突，属于已知问题，主空间安装正常。"}},
+    {"@type":"Question","name":"安装包体积突然变大，要不要担心？","acceptedAnswer":{"@type":"Answer","text":"对照标称值即可。v3.4.2 为 41.8 MB，超过 60 MB 的来源值得怀疑，建议换回核对过校验码的副本。"}}
+  ]
+}
+</script>
+</body>
+  </html>

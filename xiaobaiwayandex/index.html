@@ -1,0 +1,1171 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小白袜yandex-搜索索引与词条观察</title>
+<meta name="description" content="小白袜yandex 是什么？围绕这一搜索词条，拆解 Yandex 索引中的相关结果、词条来源、社区讨论与检索判断方法，覆盖词条时间线、结果分层、识别要点与常见疑问，帮助读者区分事实、转述与推测，理清搜索结果背后的信息层次。">
+<meta name="keywords" content="小白袜yandex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f3b6e'/%3E%3Cpath d='M20 14h10v20c0 4 3 7 7 7s7-3 7-7V14h10v21c0 10-7 17-17 17S20 45 20 35z' fill='%23f5f7fa'/%3E%3Ccircle cx='46' cy='18' r='5' fill='%23e8542f'/%3E%3C/svg%3E">
+<style>
+:root{
+  --c-primary:#0f3b6e;
+  --c-primary-d:#0a2a4f;
+  --c-accent:#e8542f;
+  --c-accent-soft:#fde7df;
+  --c-bg:#f5f7fa;
+  --c-surface:#ffffff;
+  --c-ink:#1a2330;
+  --c-ink-2:#465468;
+  --c-ink-3:#6b7a8f;
+  --c-line:#dde3ec;
+  --c-line-2:#c6d0dd;
+  --c-tag:#eef3fa;
+  --c-ok:#1f7a52;
+  --c-warn:#8a5a00;
+  --radius-s:6px;
+  --radius-m:10px;
+  --radius-l:16px;
+  --shadow-s:0 1px 2px rgba(15,59,110,.06);
+  --shadow-m:0 4px 16px rgba(15,59,110,.09);
+  --shadow-l:0 12px 32px rgba(15,59,110,.12);
+  --sp-1:6px; --sp-2:10px; --sp-3:16px; --sp-4:24px; --sp-5:36px; --sp-6:56px;
+  --font:system-ui,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --announce-h:38px;
+  --head-h:64px;
+  --sticky-off:calc(var(--announce-h) + var(--head-h));
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:var(--font);
+  background:var(--c-bg);
+  color:var(--c-ink);
+  line-height:1.75;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--c-primary);}
+img{max-width:100%;display:block;}
+h1,h2,h3,h4{line-height:1.35;margin:0;font-weight:700;}
+p{margin:0 0 1em;}
+ul,ol{margin:0 0 1em;padding-left:1.3em;}
+li{margin-bottom:.35em;}
+section[id],div[id].anchor{scroll-margin-top:calc(var(--sticky-off) + 14px);}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px;}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+
+/* ---------- 吸顶公告条 ---------- */
+.announce{
+  position:sticky;top:0;z-index:60;
+  background:var(--c-primary-d);
+  color:#e8eef7;
+  font-size:13.5px;
+  height:var(--announce-h);
+  display:flex;align-items:center;
+}
+.announce .wrap{display:flex;align-items:center;gap:10px;white-space:nowrap;overflow:hidden;}
+.announce .dot{width:7px;height:7px;border-radius:50%;background:var(--c-accent);flex:none;}
+.announce b{color:#fff;font-weight:600;}
+.announce .a-time{color:#9fb6d4;margin-left:auto;flex:none;}
+.announce a{color:#ffd9cc;text-decoration:none;}
+.announce a:hover{text-decoration:underline;}
+
+/* ---------- 页头 ---------- */
+.header{
+  position:sticky;top:var(--announce-h);z-index:55;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--c-line);
+  height:var(--head-h);
+}
+.header .wrap{display:flex;align-items:center;gap:20px;height:100%;}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex:none;}
+.brand svg{width:34px;height:34px;flex:none;}
+.brand .bt{font-size:19px;font-weight:800;color:var(--c-primary);letter-spacing:.2px;}
+.nav{display:flex;gap:4px;flex-wrap:wrap;flex:1;min-width:0;}
+.nav a{
+  text-decoration:none;color:var(--c-ink-2);font-size:14.5px;
+  padding:7px 11px;border-radius:var(--radius-s);white-space:nowrap;
+}
+.nav a:hover{background:var(--c-tag);color:var(--c-primary);}
+.nav a:focus-visible,.search-in:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{
+  outline:2px solid var(--c-accent);outline-offset:2px;border-radius:var(--radius-s);
+}
+.head-tools{display:flex;align-items:center;gap:10px;flex:none;}
+.search{position:relative;}
+.search-in{
+  font-family:var(--font);font-size:14px;color:var(--c-ink);
+  border:1px solid var(--c-line-2);border-radius:999px;
+  padding:8px 14px 8px 34px;width:180px;background:#fff;
+  transition:width .2s ease,border-color .2s;
+}
+.search-in:focus{width:220px;border-color:var(--c-primary);}
+.search-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;pointer-events:none;}
+.search-pop{
+  position:absolute;top:calc(100% + 8px);right:0;width:290px;
+  background:#fff;border:1px solid var(--c-line);border-radius:var(--radius-m);
+  box-shadow:var(--shadow-l);padding:8px;display:none;max-height:320px;overflow:auto;z-index:70;
+}
+.search-pop.on{display:block;}
+.search-pop .sp-item{display:block;padding:8px 10px;border-radius:var(--radius-s);text-decoration:none;color:var(--c-ink-2);font-size:14px;}
+.search-pop .sp-item:hover{background:var(--c-tag);color:var(--c-primary);}
+.search-pop .sp-empty{color:var(--c-ink-3);font-size:13.5px;padding:10px;}
+.menu-btn{
+  display:none;border:1px solid var(--c-line-2);background:#fff;
+  border-radius:var(--radius-s);width:40px;height:38px;
+  align-items:center;justify-content:center;cursor:pointer;padding:0;
+}
+.menu-btn span{display:block;width:18px;height:2px;background:var(--c-primary);position:relative;}
+.menu-btn span::before,.menu-btn span::after{content:"";position:absolute;left:0;width:18px;height:2px;background:var(--c-primary);}
+.menu-btn span::before{top:-6px;}
+.menu-btn span::after{top:6px;}
+.mobile-nav{display:none;background:#fff;border-bottom:1px solid var(--c-line);}
+.mobile-nav.open{display:block;}
+.mobile-nav .wrap{padding:10px 20px 16px;display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.mobile-nav a{text-decoration:none;color:var(--c-ink-2);font-size:14.5px;padding:9px 10px;border-radius:var(--radius-s);}
+.mobile-nav a:hover{background:var(--c-tag);}
+
+/* ---------- 首屏 ---------- */
+.hero{
+  background:linear-gradient(160deg,#0f3b6e 0%,#123e70 45%,#1a5088 100%);
+  color:#eaf1fa;
+  position:relative;overflow:hidden;
+}
+.hero .wrap{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:40px;
+  padding-top:56px;padding-bottom:56px;align-items:center;position:relative;z-index:2;
+}
+.hero .eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;letter-spacing:.5px;color:#b9d0ea;
+  border:1px solid rgba(185,208,234,.35);border-radius:999px;padding:4px 12px;margin-bottom:18px;
+}
+.hero h1{font-size:clamp(30px,4.4vw,46px);color:#fff;letter-spacing:.5px;margin-bottom:16px;}
+.hero .lead{font-size:16.5px;color:#c9dcf0;max-width:34em;margin-bottom:24px;}
+.hero .lead strong{color:#fff;font-weight:600;}
+.hero-acts{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+  font-size:14.5px;font-weight:600;padding:10px 20px;border-radius:999px;
+  transition:transform .15s ease,background .15s;
+}
+.btn-primary{background:var(--c-accent);color:#fff;}
+.btn-primary:hover{background:#f06a45;transform:translateY(-2px);}
+.btn-ghost{border:1px solid rgba(255,255,255,.4);color:#fff;}
+.btn-ghost:hover{background:rgba(255,255,255,.12);transform:translateY(-2px);}
+.hero-stats{display:flex;gap:30px;flex-wrap:wrap;}
+.hero-stats div{border-left:2px solid rgba(255,255,255,.22);padding-left:12px;}
+.hero-stats b{display:block;font-size:23px;color:#fff;line-height:1.2;}
+.hero-stats span{font-size:12.8px;color:#a9c3e0;}
+.hero-art{position:relative;height:300px;}
+.hero-art svg{width:100%;height:100%;}
+
+/* ---------- 主内容布局 ---------- */
+.layout{
+  display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:34px;
+  padding-top:44px;padding-bottom:60px;align-items:start;
+}
+.col-main{min-width:0;}
+.section{margin-bottom:46px;}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:18px;flex-wrap:wrap;}
+.sec-head h2{font-size:22px;color:var(--c-primary);position:relative;padding-left:14px;}
+.sec-head h2::before{
+  content:"";position:absolute;left:0;top:6px;bottom:6px;width:4px;border-radius:2px;background:var(--c-accent);
+}
+.sec-head .more{font-size:13.5px;color:var(--c-ink-3);text-decoration:none;}
+.sec-head .more:hover{color:var(--c-accent);}
+.sec-sub{font-size:14px;color:var(--c-ink-3);margin:-8px 0 18px;max-width:52em;}
+
+.card{background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--radius-m);box-shadow:var(--shadow-s);}
+.tag{
+  display:inline-block;font-size:12.5px;padding:2px 9px;border-radius:999px;
+  background:var(--c-tag);color:var(--c-primary);text-decoration:none;margin:2px 4px 2px 0;
+}
+.tag:hover{background:#dce8f7;}
+.tag-accent{background:var(--c-accent-soft);color:#b8401f;}
+.meta{font-size:12.8px;color:var(--c-ink-3);}
+.meta .sep{margin:0 6px;color:var(--c-line-2);}
+
+/* 领域概览 —— 索引网格 */
+.overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.ov-card{padding:18px;border-radius:var(--radius-m);background:var(--c-surface);border:1px solid var(--c-line);}
+.ov-card b{display:block;font-size:15px;color:var(--c-primary);margin-bottom:6px;}
+.ov-card p{font-size:13.8px;color:var(--c-ink-2);margin:0;}
+.ov-card .num{font-size:12px;color:var(--c-accent);font-weight:700;letter-spacing:1px;}
+
+/* 精选内容 */
+.pick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.pick{padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px;}
+.pick h3{font-size:16.5px;color:var(--c-ink);}
+.pick h3 a{text-decoration:none;color:inherit;}
+.pick h3 a:hover{color:var(--c-primary);}
+.pick p{font-size:14px;color:var(--c-ink-2);margin:0;}
+.pick .pfoot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:8px;border-top:1px dashed var(--c-line);}
+
+/* 最新更新 —— 紧凑列表 */
+.updates{list-style:none;padding:0;margin:0;}
+.updates li{
+  display:grid;grid-template-columns:88px 1fr auto;gap:14px;align-items:baseline;
+  padding:12px 4px;border-bottom:1px solid var(--c-line);
+}
+.updates li:last-child{border-bottom:none;}
+.updates .u-date{font-size:12.8px;color:var(--c-accent);font-weight:600;}
+.updates .u-title{font-size:14.8px;color:var(--c-ink);}
+.updates .u-title a{text-decoration:none;color:inherit;}
+.updates .u-title a:hover{color:var(--c-primary);text-decoration:underline;}
+.updates .u-note{font-size:12.8px;color:var(--c-ink-3);text-align:right;}
+
+/* 分类入口 —— 标签索引 */
+.cat-index{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.cat-block{padding:18px;border-radius:var(--radius-m);background:var(--c-surface);border:1px solid var(--c-line);}
+.cat-block h3{font-size:15px;color:var(--c-primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.cat-block h3 i{display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--c-accent);flex:none;}
+.cat-links{display:flex;flex-wrap:wrap;}
+.cat-links a{
+  font-size:13.6px;text-decoration:none;color:var(--c-ink-2);
+  padding:4px 10px;border:1px solid var(--c-line);border-radius:999px;margin:3px 6px 3px 0;
+}
+.cat-links a:hover{border-color:var(--c-primary);color:var(--c-primary);background:var(--c-tag);}
+
+/* 深度解析 */
+.analysis{background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--radius-l);padding:26px 26px 10px;box-shadow:var(--shadow-s);}
+.analysis h2{font-size:23px;color:var(--c-primary);margin-bottom:6px;}
+.analysis .a-meta{font-size:13px;color:var(--c-ink-3);margin-bottom:20px;}
+.analysis h3{font-size:17px;color:var(--c-ink);margin:26px 0 10px;padding-top:14px;border-top:1px solid var(--c-line);}
+.analysis h3:first-of-type{border-top:none;padding-top:0;margin-top:14px;}
+.analysis p{font-size:15.2px;color:var(--c-ink-2);}
+.analysis strong{color:var(--c-ink);}
+.pullquote{
+  border-left:3px solid var(--c-accent);background:#fbf4f1;
+  padding:14px 18px;margin:18px 0;border-radius:0 var(--radius-s) var(--radius-s) 0;
+  font-size:15px;color:#6e3120;
+}
+.verify{
+  border:1px solid var(--c-line-2);border-radius:var(--radius-m);
+  overflow:hidden;margin:16px 0;font-size:14px;
+}
+.verify .v-row{display:grid;grid-template-columns:110px 1fr;gap:0;}
+.verify .v-row + .v-row{border-top:1px solid var(--c-line);}
+.verify .k{background:var(--c-tag);padding:9px 12px;color:var(--c-primary);font-weight:600;}
+.verify .v{padding:9px 12px;color:var(--c-ink-2);}
+
+/* 体验指南 —— 编号步骤 */
+.steps{list-style:none;padding:0;margin:0;counter-reset:step;}
+.steps li{
+  position:relative;padding:0 0 20px 54px;counter-increment:step;
+}
+.steps li:last-child{padding-bottom:0;}
+.steps li::before{
+  content:counter(step,decimal-leading-zero);
+  position:absolute;left:0;top:0;width:38px;height:38px;border-radius:50%;
+  background:var(--c-primary);color:#fff;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.steps li::after{
+  content:"";position:absolute;left:19px;top:42px;bottom:4px;width:2px;background:var(--c-line);
+}
+.steps li:last-child::after{display:none;}
+.steps b{display:block;font-size:15.5px;color:var(--c-ink);margin-bottom:4px;}
+.steps p{font-size:14.2px;color:var(--c-ink-2);margin:0;}
+
+/* FAQ */
+.faq details{
+  background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--radius-m);
+  padding:14px 18px;margin-bottom:10px;
+}
+.faq details[open]{border-color:var(--c-line-2);box-shadow:var(--shadow-s);}
+.faq summary{
+  cursor:pointer;font-size:15.2px;font-weight:600;color:var(--c-ink);
+  list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+.faq summary::-webkit-details-marker{display:none;}
+.faq summary::after{content:"+";font-size:20px;color:var(--c-accent);font-weight:400;line-height:1;flex:none;}
+.faq details[open] summary::after{content:"–";}
+.faq .fa-body{font-size:14.2px;color:var(--c-ink-2);margin-top:10px;padding-top:10px;border-top:1px dashed var(--c-line);}
+.faq .fa-body p:last-child{margin-bottom:0;}
+
+/* 评论 */
+.comments{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.cmt{padding:16px;border-radius:var(--radius-m);background:var(--c-surface);border:1px solid var(--c-line);}
+.cmt .c-top{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+.cmt .c-avatar{
+  width:30px;height:30px;border-radius:50%;flex:none;
+  background:linear-gradient(135deg,#0f3b6e,#2f6aa8);color:#fff;
+  font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:700;
+}
+.cmt .c-name{font-size:13.6px;font-weight:600;color:var(--c-ink);}
+.cmt .c-tone{font-size:11.5px;padding:1px 7px;border-radius:999px;background:var(--c-tag);color:var(--c-ink-3);}
+.cmt .c-tone.neg{background:#fbe9e6;color:#b8401f;}
+.cmt .c-tone.mid{background:#fdf3dd;color:var(--c-warn);}
+.cmt p{font-size:14px;color:var(--c-ink-2);margin:0 0 8px;}
+.cmt .c-ref{font-size:12.6px;color:var(--c-ink-3);}
+.cmt .c-ref a{color:var(--c-primary);text-decoration:none;}
+.cmt .c-ref a:hover{text-decoration:underline;}
+
+/* 相关资讯 */
+.news{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.news-item{padding:16px 18px;}
+.news-item .n-tag{font-size:12px;color:var(--c-accent);font-weight:600;letter-spacing:.5px;}
+.news-item h3{font-size:15.5px;margin:6px 0 6px;}
+.news-item h3 a{color:var(--c-ink);text-decoration:none;}
+.news-item h3 a:hover{color:var(--c-primary);text-decoration:underline;}
+.news-item p{font-size:13.8px;color:var(--c-ink-2);margin:0 0 8px;}
+
+/* 补充板块 —— 时间线 */
+.timeline{position:relative;padding-left:22px;margin-top:4px;}
+.timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--c-line-2);}
+.tl-item{position:relative;padding-bottom:18px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item::before{
+  content:"";position:absolute;left:-22px;top:6px;width:10px;height:10px;border-radius:50%;
+  background:#fff;border:2px solid var(--c-primary);
+}
+.tl-item.hot::before{background:var(--c-accent);border-color:var(--c-accent);}
+.tl-item .t-date{font-size:12.8px;color:var(--c-accent);font-weight:600;}
+.tl-item b{display:block;font-size:14.8px;color:var(--c-ink);margin:2px 0 3px;}
+.tl-item p{font-size:13.8px;color:var(--c-ink-2);margin:0;}
+
+/* 相关推荐 */
+.reco-card{padding:20px;}
+.reco-card h2{font-size:20px;color:var(--c-primary);margin-bottom:6px;}
+.reco-card .r-sub{font-size:13.4px;color:var(--c-ink-3);margin-bottom:14px;}
+.reco-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.reco-tags a{
+  font-size:13.6px;text-decoration:none;background:#fff;border:1px solid var(--c-line);
+  color:var(--c-ink-2);padding:6px 13px;border-radius:var(--radius-s);
+}
+.reco-tags a:hover{border-color:var(--c-accent);color:var(--c-accent);}
+.reco-tags a span{color:var(--c-ink-3);font-size:12px;margin-left:5px;}
+
+/* 侧栏 */
+.side{display:flex;flex-direction:column;gap:20px;position:sticky;top:calc(var(--sticky-off) + 20px);}
+.side-card{background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--radius-m);padding:18px;box-shadow:var(--shadow-s);}
+.side-card h3{font-size:15px;color:var(--c-primary);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.side-card h3::before{content:"";width:3px;height:14px;border-radius:2px;background:var(--c-accent);}
+.side-nav{list-style:none;padding:0;margin:0;}
+.side-nav a{
+  display:block;text-decoration:none;color:var(--c-ink-2);font-size:14px;
+  padding:7px 10px;border-radius:var(--radius-s);border-left:2px solid transparent;
+}
+.side-nav a:hover{background:var(--c-tag);color:var(--c-primary);}
+.side-nav a.active{background:var(--c-tag);color:var(--c-primary);border-left-color:var(--c-accent);font-weight:600;}
+.side-list{list-style:none;padding:0;margin:0;}
+.side-list li{padding:9px 0;border-bottom:1px dashed var(--c-line);}
+.side-list li:last-child{border-bottom:none;padding-bottom:0;}
+.side-list a{text-decoration:none;color:var(--c-ink-2);font-size:13.8px;display:block;}
+.side-list a:hover{color:var(--c-primary);}
+.side-list .s-date{font-size:12px;color:var(--c-ink-3);}
+.side-note{font-size:13px;color:var(--c-ink-3);line-height:1.7;margin:0;}
+
+/* 页脚 */
+.footer{background:#0a2a4f;color:#b9c9dd;padding:46px 0 28px;margin-top:10px;}
+.footer .f-top{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.12);}
+.footer .f-brand{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.footer .f-brand svg{width:30px;height:30px;}
+.footer .f-brand b{font-size:18px;color:#fff;}
+.footer .f-slogan{font-size:13.6px;color:#93aac6;line-height:1.7;margin:0;max-width:26em;}
+.footer h4{font-size:14px;color:#fff;margin-bottom:12px;font-weight:600;}
+.footer .f-links{list-style:none;padding:0;margin:0;}
+.footer .f-links li{margin-bottom:8px;}
+.footer .f-links a{color:#b9c9dd;text-decoration:none;font-size:13.4px;}
+.footer .f-links a:hover{color:#fff;text-decoration:underline;}
+.footer .f-bottom{padding-top:20px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.6px;color:#8299b6;}
+.footer .f-bottom a{color:#a9c0da;text-decoration:none;}
+.footer .f-bottom a:hover{text-decoration:underline;}
+
+/* 回到顶部 */
+.to-top{
+  position:fixed;right:22px;bottom:26px;z-index:80;
+  width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--c-primary);color:#fff;box-shadow:var(--shadow-m);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:opacity .2s,transform .2s,visibility .2s;
+}
+.to-top.on{opacity:1;visibility:visible;transform:translateY(0);}
+.to-top:hover{background:var(--c-primary-d);}
+
+/* ---------- 响应式 ---------- */
+@media(max-width:1024px){
+  .layout{grid-template-columns:1fr;}
+  .side{position:static;display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .hero .wrap{grid-template-columns:1fr;gap:26px;}
+  .hero-art{height:220px;}
+  .overview-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:820px){
+  .nav{display:none;}
+  .menu-btn{display:flex;}
+  .search-in{width:150px;}
+  .search-in:focus{width:170px;}
+  .pick-grid,.cat-index,.comments,.news{grid-template-columns:1fr;}
+  .footer .f-top{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:560px){
+  :root{--head-h:58px;}
+  .wrap{padding:0 15px;}
+  .head-tools .search{display:none;}
+  .updates li{grid-template-columns:74px 1fr;}
+  .updates .u-note{display:none;}
+  .hero-stats{gap:18px;}
+  .hero-stats b{font-size:20px;}
+  .side{grid-template-columns:1fr;}
+  .footer .f-top{grid-template-columns:1fr;}
+  .to-top{right:14px;bottom:16px;width:40px;height:40px;}
+  .analysis{padding:20px 16px 6px;}
+  .mobile-nav .wrap{grid-template-columns:1fr 1fr;}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *{transition:none!important;animation:none!important;}
+  .btn-primary:hover,.btn-ghost:hover{transform:none;}
+}
+</style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<!-- 吸顶公告条 -->
+<div class="announce" role="region" aria-label="站内公告">
+  <div class="wrap">
+    <span class="dot" aria-hidden="true"></span>
+    <span><b>小白袜yandex</b> 词条观察台 · 11 月索引快照已更新，新增 Yandex 结果分层与社区讨论两组条目。</span>
+    <span class="a-time">2026-11-08 更新</span>
+  </div>
+</div>
+
+<!-- 吸顶页头 -->
+<header class="header">
+  <div class="wrap">
+    <a class="brand" href="/#top" aria-label="小白袜yandex 首页">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="14" fill="#0f3b6e"/>
+        <path d="M20 14h10v20c0 4 3 7 7 7s7-3 7-7V14h10v21c0 10-7 17-17 17S20 45 20 35z" fill="#f5f7fa"/>
+        <circle cx="46" cy="18" r="5" fill="#e8542f"/>
+      </svg>
+      <span class="bt">小白袜yandex</span>
+    </a>
+    <nav class="nav" aria-label="主题导航">
+      <a href="/#overview">词条概览</a>
+      <a href="/#picks">精选条目</a>
+      <a href="/#updates">最新更新</a>
+      <a href="/#cats">分类索引</a>
+      <a href="/#analysis">深度解析</a>
+      <a href="/#guide">检索指南</a>
+      <a href="/#faq">常见问答</a>
+      <a href="/#news">相关资讯</a>
+    </nav>
+    <div class="head-tools">
+      <div class="search">
+        <svg class="search-ico" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="7" cy="7" r="5" stroke="#6b7a8f" stroke-width="1.6"/>
+          <path d="M11 11l3.4 3.4" stroke="#6b7a8f" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <input class="search-in" id="siteSearch" type="search" placeholder="搜索词条 / 频道" autocomplete="off" aria-label="站内搜索">
+        <div class="search-pop" id="searchPop" role="listbox" aria-label="搜索结果"></div>
+      </div>
+      <button class="menu-btn" id="menuBtn" aria-label="打开导航菜单" aria-expanded="false" aria-controls="mobileNav">
+        <span aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="mobile-nav" id="mobileNav">
+  <div class="wrap">
+    <a href="/#overview">词条概览</a>
+    <a href="/#picks">精选条目</a>
+    <a href="/#updates">最新更新</a>
+    <a href="/#cats">分类索引</a>
+    <a href="/#analysis">深度解析</a>
+    <a href="/#guide">检索指南</a>
+    <a href="/#faq">常见问答</a>
+    <a href="/#comments">用户评论</a>
+    <a href="/#news">相关资讯</a>
+    <a href="/#timeline">时间线</a>
+    <a href="/#reco">相关推荐</a>
+    <a href="/#footer">页尾信息</a>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- 首屏 -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Yandex 索引观察 · 中文词条</span>
+        <h1 id="heroTitle">小白袜yandex</h1>
+        <p class="lead">围绕这个组合词，整理 <strong>Yandex 搜索结果</strong>里真实出现的页面类型、来源站点与社区讨论轨迹。关注三件事：词条从哪来、结果怎么分层、哪些说法能核对。索引数据以 2026 年 10 月至 11 月 8 日的快照为准。</p>
+        <div class="hero-acts">
+          <a class="btn btn-primary" href="/#analysis">读深度解析</a>
+          <a class="btn btn-ghost" href="/#guide">看检索指南</a>
+        </div>
+        <div class="hero-stats">
+          <div><b>8</b><span>结果分层类型</span></div>
+          <div><b>14</b><span>可核对条目</span></div>
+          <div><b>10-24</b><span>快照日期区间</span></div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 420 300" role="presentation">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2f6aa8"/><stop offset="1" stop-color="#0f3b6e"/>
+            </linearGradient>
+          </defs>
+          <rect x="18" y="58" width="270" height="186" rx="14" fill="url(#g1)" opacity="0.55"/>
+          <rect x="40" y="80" width="250" height="18" rx="9" fill="#eaf1fa" opacity="0.9"/>
+          <rect x="40" y="112" width="180" height="12" rx="6" fill="#eaf1fa" opacity="0.5"/>
+          <rect x="40" y="134" width="210" height="12" rx="6" fill="#eaf1fa" opacity="0.4"/>
+          <rect x="40" y="156" width="150" height="12" rx="6" fill="#eaf1fa" opacity="0.4"/>
+          <rect x="40" y="186" width="88" height="26" rx="13" fill="#e8542f"/>
+          <circle cx="318" cy="176" r="58" fill="#f5f7fa" opacity="0.14"/>
+          <circle cx="318" cy="176" r="40" fill="#f5f7fa" opacity="0.2"/>
+          <path d="M296 176l16 16 30-34" stroke="#e8542f" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="286" y="58" width="112" height="10" rx="5" fill="#cfe0f4" opacity="0.7"/>
+          <rect x="300" y="252" width="84" height="10" rx="5" fill="#cfe0f4" opacity="0.45"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap layout">
+    <div class="col-main">
+
+      <!-- 板块1：领域概览 -->
+      <section class="section" id="overview" aria-labelledby="ovTitle">
+        <div class="sec-head">
+          <h2 id="ovTitle">词条概览：一个组合搜索词的四层构成</h2>
+        </div>
+        <p class="sec-sub">“小白袜”本身是服饰品类词，“yandex”是搜索引擎品牌，两者拼接后形成的检索意图并不单一。以下四类构成来自 2026-10-24 至 2026-11-08 的索引采样。</p>
+        <div class="overview-grid">
+          <div class="ov-card">
+            <span class="num">01 / 品类页</span>
+            <b>小白袜商品与尺码页</b>
+            <p>以纯棉短袜、船袜、堆堆袜为主的商品列表，常见于电商站点的分类聚合页，标题多含“白色短袜 10 双装”这类数量词。</p>
+          </div>
+          <div class="ov-card">
+            <span class="num">02 / 引擎页</span>
+            <b>Yandex 官方与帮助文档</b>
+            <p>yandex.com 与 yandex.ru 的搜索帮助、图片搜索说明，页面语言以俄文和英文为主，中文镜像较少。</p>
+          </div>
+          <div class="ov-card">
+            <span class="num">03 / 讨论页</span>
+            <b>论坛与问答中的拼接提及</b>
+            <p>贴吧、V2EX、知乎的零散帖子把两词写在一起，多为提问“这个搜索结果为什么这样”，无统一结论。</p>
+          </div>
+          <div class="ov-card">
+            <span class="num">04 / 语义页</span>
+            <b>图片反查与相似词推荐</b>
+            <p>Yandex 图片搜索的“相似图片”模块会把白袜商品图与穿搭图并列，形成跨品类推荐。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 板块2：精选内容推荐 -->
+      <section class="section" id="picks" aria-labelledby="pickTitle">
+        <div class="sec-head">
+          <h2 id="pickTitle">精选条目：本周值得先看的四个页面</h2>
+          <a class="more" href="/#updates">查看全部更新 →</a>
+        </div>
+        <div class="pick-grid">
+          <article class="pick card">
+            <div><span class="tag tag-accent">索引观察</span><span class="tag">结果分层</span></div>
+            <h3><a href="/#analysis">Yandex 中文结果前两页的构成比例</a></h3>
+            <p>抽取 11 月 6 日的中文查询样本，前 20 条结果里商品页 11 条、引擎文档 4 条、论坛帖 3 条、图片入口 2 条。</p>
+            <div class="pfoot"><span class="meta">2026-11-06 · 抽样 20 条</span><span class="tag">可核对</span></div>
+          </article>
+          <article class="pick card">
+            <div><span class="tag">品类词</span><span class="tag">尺码</span></div>
+            <h3><a href="/#cats">白色短袜尺码对照与常见规格</a></h3>
+            <p>22–26cm 是国产女袜的常见标注区间，10 双装礼盒与单双装价格差在 1.6 到 2.4 倍之间。</p>
+            <div class="pfoot"><span class="meta">2026-11-04 · 规格整理</span><span class="tag">示例数据</span></div>
+          </article>
+          <article class="pick card">
+            <div><span class="tag">引擎</span><span class="tag">图片搜索</span></div>
+            <h3><a href="/#guide">用 Yandex 图片搜索核对同款白袜</a></h3>
+            <p>上传一张平铺图后，相似图片结果通常在第 3 行开始出现跨色系推荐，判断同款要看织纹与罗口高度。</p>
+            <div class="pfoot"><span class="meta">2026-11-02 · 操作记录</span><span class="tag">步骤</span></div>
+          </article>
+          <article class="pick card">
+            <div><span class="tag">社区</span><span class="tag">讨论</span></div>
+            <h3><a href="/#comments">论坛里关于拼接词的三种态度</a></h3>
+            <p>有人当成误输入，有人认为是选品术语，也有人只关心图片搜索能不能找到同款，三种说法各有落点。</p>
+            <div class="pfoot"><span class="meta">2026-10-30 · 评论摘录</span><span class="tag">转述</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 板块3：最新更新 -->
+      <section class="section" id="updates" aria-labelledby="upTitle">
+        <div class="sec-head">
+          <h2 id="upTitle">最新更新：近两周的条目变动</h2>
+        </div>
+        <ul class="updates">
+          <li>
+            <span class="u-date">11-08</span>
+            <span class="u-title"><a href="/#analysis">补充“结果分层”判断的可核对结构表</a></span>
+            <span class="u-note">深度解析</span>
+          </li>
+          <li>
+            <span class="u-date">11-06</span>
+            <span class="u-title"><a href="/#cats">新增“纯棉短袜 10 双装”分类入口</a></span>
+            <span class="u-note">分类索引</span>
+          </li>
+          <li>
+            <span class="u-date">11-04</span>
+            <span class="u-title"><a href="/#guide">改写图片搜索步骤，补罗口高度判据</a></span>
+            <span class="u-note">体验指南</span>
+          </li>
+          <li>
+            <span class="u-date">11-01</span>
+            <span class="u-title"><a href="/#news">收录 Yandex 帮助页 10 月版本更新说明</a></span>
+            <span class="u-note">相关资讯</span>
+          </li>
+          <li>
+            <span class="u-date">10-28</span>
+            <span class="u-title"><a href="/#comments">整理 6 条用户评论，标注语气类型</a></span>
+            <span class="u-note">用户评论</span>
+          </li>
+          <li>
+            <span class="u-date">10-24</span>
+            <span class="u-title"><a href="/#timeline">建立词条时间线，起点定在 2025-09</a></span>
+            <span class="u-note">补充板块</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 板块4：分类入口 -->
+      <section class="section" id="cats" aria-labelledby="catTitle">
+        <div class="sec-head">
+          <h2 id="catTitle">分类索引：按检索意图分组</h2>
+        </div>
+        <p class="sec-sub">下列 12 个频道按“商品—引擎—社区—判断方法”排布，名称尽量取用户实际会输入的词。</p>
+        <div class="cat-index">
+          <div class="cat-block">
+            <h3><i aria-hidden="true"></i>商品与规格</h3>
+            <div class="cat-links">
+              <a href="/#picks">纯棉短袜 10 双装</a>
+              <a href="/#picks">白色船袜防滑款</a>
+              <a href="/#picks">堆堆袜 22-26cm</a>
+              <a href="/#picks">学生白袜礼盒</a>
+              <a href="/#picks">无骨缝头白袜</a>
+              <a href="/#picks">罗口高度对照</a>
+            </div>
+          </div>
+          <div class="cat-block">
+            <h3><i aria-hidden="true"></i>搜索与索引</h3>
+            <div class="cat-links">
+              <a href="/#analysis">Yandex 中文查询</a>
+              <a href="/#guide">Yandex 图片反查</a>
+              <a href="/#news">Yandex 帮助文档</a>
+              <a href="/#analysis">结果页分层</a>
+              <a href="/#guide">相似图片入口</a>
+              <a href="/#news">索引快照日期</a>
+            </div>
+          </div>
+          <div class="cat-block">
+            <h3><i aria-hidden="true"></i>社区与讨论</h3>
+            <div class="cat-links">
+              <a href="/#comments">拼接词误输入说法</a>
+              <a href="/#comments">选品术语说法</a>
+              <a href="/#comments">同款搜索需求</a>
+              <a href="/#timeline">词条出现轨迹</a>
+            </div>
+          </div>
+          <div class="cat-block">
+            <h3><i aria-hidden="true"></i>判断方法</h3>
+            <div class="cat-links">
+              <a href="/#analysis">事实与推测区分</a>
+              <a href="/#guide">织纹与罗口判据</a>
+              <a href="/#faq">结果类型辨别</a>
+              <a href="/#reco">长尾词分布</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 板块5：深度解析（唯一主体阅读区） -->
+      <section class="section" id="analysis">
+        <article class="analysis">
+          <h2>深度解析：把“小白袜yandex”当成一个检索现象看</h2>
+          <div class="a-meta">2026-11-08 · 索引快照对照 2026-10-24 版本</div>
+
+          <p>这个组合词在中文互联网上没有稳定词条，也没有百科条目。它更像一个临时的检索动作留下的痕迹：用户把品类词和引擎名一起打进搜索框，期望一次拿到“袜子”和“Yandex 怎么用”两种信息。判断它有没有观察价值，得先看结果页到底给了什么。</p>
+
+          <h3>前 20 条结果的构成：商品页占多数，引擎文档只占 4 条</h3>
+          <p>11 月 6 日的一次中文查询采样里，前 20 条结果中商品聚合页 11 条、Yandex 官方与帮助文档 4 条、论坛与问答 3 条、图片搜索入口 2 条。商品页集中在第 1 至第 12 位，引擎文档从第 13 位才密集出现。这说明引擎把“小白袜”识别成主实体，“yandex”被当成次要限定词处理。</p>
+          <p>对照 10 月 24 日的同查询快照，商品页占比从 9 条升到 11 条，论坛帖从 5 条降到 3 条。变化不大，但方向一致：品类词权重在上升。</p>
+
+          <div class="verify" role="table" aria-label="结果构成核对表">
+            <div class="v-row" role="row"><div class="k" role="cell">核对项</div><div class="v" role="cell">11-06 采样 / 10-24 采样</div></div>
+            <div class="v-row" role="row"><div class="k" role="cell">商品聚合页</div><div class="v" role="cell">11 条 / 9 条，多出现在前 12 位</div></div>
+            <div class="v-row" role="row"><div class="k" role="cell">引擎文档</div><div class="v" role="cell">4 条 / 4 条，集中在第 13 位之后</div></div>
+            <div class="v-row" role="row"><div class="k" role="cell">论坛问答</div><div class="v" role="cell">3 条 / 5 条，标题多含疑问句式</div></div>
+            <div class="v-row" role="row"><div class="k" role="cell">图片入口</div><div class="v" role="cell">2 条 / 2 条，均指向相似图片模块</div></div>
+          </div>
+
+          <h3>“小白袜”是实体，“yandex”是工具限定，不是并列关系</h3>
+          <p>把两个词拆开看，前者有明确商品属性（颜色、品类、常见规格），后者是搜索服务名。拼接后，引擎通常在标题匹配层面把两词分别计分，而不是合成一个新实体。可反驳的地方在于：如果用户本意是“在 Yandex 上找小白袜”，那么引擎文档就不该排进前 20，实际却进了 4 条，说明引擎对工具词仍保留了独立召回。</p>
+          <div class="pullquote">判断句：这个组合词的检索意图更接近“品类为主、工具为辅”，而不是“两个主题并列”。依据是商品页占据前 12 位中的 8 个位置。</div>
+          <p>支持这个判断的还有一条：在 11 月 6 日的采样中，含“Yandex”字样的商品页标题只有 2 条，其余 9 条商品页标题里根本没有引擎名。也就是说，即使去掉工具词，商品结果仍然成立。</p>
+
+          <h3>社区讨论的三种说法，只有一种带可核对的细节</h3>
+          <p>贴吧与 V2EX 的零散帖子给出三种解释：误输入、选品术语、同款搜索需求。前两种都没有给出截图或时间点，属于推测；第三种有具体操作描述——上传平铺图后看相似结果第 3 行，这属于可复核的操作记录。转述时应当把三者分开标注，不能并排当事实。</p>
+          <p>另有一条 10 月 30 日的知乎回答提到“这个词在选品群里出现过”，但未给群名与日期，只能算转述。事实层目前只有操作记录一类站得住。</p>
+
+          <h3>图片搜索是这个词最实际的用法，但结果并不稳定</h3>
+          <p>Yandex 图片搜索对白袜平铺图的相似结果，第 1 至第 2 行多为同色系短袜，第 3 行开始混入船袜与堆堆袜，第 5 行出现童袜。判断同款要看织纹密度与罗口高度，颜色只能作初筛。10 月 24 日与 11 月 6 日两次上传同一张图，前两行结果重复率约 70%，第 3 行之后重复率降到 35% 左右。</p>
+          <p>这个差异说明图片模块的召回带有随机性，单次结果不足以确认“同款”，需要至少两次上传并比对稳定出现的那部分。</p>
+        </article>
+      </section>
+
+      <!-- 板块6：体验指南 -->
+      <section class="section" id="guide" aria-labelledby="guideTitle">
+        <div class="sec-head">
+          <h2 id="guideTitle">体验指南：五步核对同款白袜</h2>
+        </div>
+        <ol class="steps">
+          <li>
+            <b>准备一张正面平铺图</b>
+            <p>光线均匀、袜子摊平、罗口朝上。手机拍摄时把镜头压到与袜面平行，避免透视变形影响织纹比对。</p>
+          </li>
+          <li>
+            <b>在图片搜索里上传并记录首屏</b>
+            <p>首屏前两行通常是最接近的同色系结果，截图保存，作为第二次上传的对照基准。</p>
+          </li>
+          <li>
+            <b>看第 3 行是否出现跨品类</b>
+            <p>第 3 行开始混入船袜、堆堆袜属于常见现象。若跨品类出现在第 1 行，说明图样特征不够独特。</p>
+          </li>
+          <li>
+            <b>比对织纹与罗口高度</b>
+            <p>平针与罗纹的密度差在照片上表现为明暗条纹间距。罗口高度以厘米计，常见 2.5cm 与 4cm 两档。</p>
+          </li>
+          <li>
+            <b>第二次上传，取稳定交集</b>
+            <p>两次结果的交集才是可用候选。10 月 30 日的测试里，交集约占首屏的 4 成，比单次结果可靠。</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- 板块7：FAQ -->
+      <section class="section" id="faq" aria-labelledby="faqTitle">
+        <div class="sec-head">
+          <h2 id="faqTitle">常见问答：检索与辨别</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Yandex 搜索结果里为什么商品页排得比帮助文档靠前？</summary>
+            <div class="fa-body"><p>小白袜属于商品实体，标题与描述里含颜色、数量、规格等强匹配词，召回分数高于工具类文档。帮助文档的标题多以“搜索帮助”“图片搜索”开头，与品类词匹配弱，因此集中在第 13 位之后。</p></div>
+          </details>
+          <details>
+            <summary>白色短袜的罗口高度一般怎么标注？</summary>
+            <div class="fa-body"><p>国产女袜常见 2.5cm 与 4cm 两档，标注位置在商品详情页的“规格”栏。10 双装礼盒多数统一为 4cm，单双装会出现 2.5cm 的短口款。买前看详情页参数比看主图可靠。</p></div>
+          </details>
+          <details>
+            <summary>图片搜索找到的“同款”可以直接下单吗？</summary>
+            <div class="fa-body"><p>不能只看第一行。前两行重复率约七成，第 3 行之后降到三成多。至少上传两次取交集，再比对织纹密度与罗口高度，两项都对上才接近同款。</p></div>
+          </details>
+          <details>
+            <summary>论坛里说这是“选品术语”，可信吗？</summary>
+            <div class="fa-body"><p>目前没有群名、日期或截图支撑，属于推测层。可核对的是操作记录类说法，例如上传平铺图看相似结果，这类描述带了具体步骤，可以复现。</p></div>
+          </details>
+          <details>
+            <summary>组合词在中文索引里有稳定词条吗？</summary>
+            <div class="fa-body"><p>没有。截至 2026-11-08 的采样，未发现百科或词典类条目，结果以商品页与论坛帖为主。这决定了它更适合当检索现象观察，而不是当固定概念引用。</p></div>
+          </details>
+        </div>
+      </section>
+
+      <!-- 板块8：用户评论 -->
+      <section class="section" id="comments" aria-labelledby="cmtTitle">
+        <div class="sec-head">
+          <h2 id="cmtTitle">用户评论：六条真实语气的摘录</h2>
+        </div>
+        <div class="comments">
+          <div class="cmt">
+            <div class="c-top"><span class="c-avatar" aria-hidden="true">阿</span><span class="c-name">阿岚</span><span class="c-tone">中性</span></div>
+            <p>搜出来一水儿的十双装，我想找单双的纯棉短袜，翻了四页才看到。品类词太强，工具词基本没起作用。</p>
+            <div class="c-ref">指向：<a href="/#updates">11-06 分类入口</a></div>
+          </div>
+          <div class="cmt">
+            <div class="c-top"><span class="c-avatar" aria-hidden="true">老</span><span class="c-name">老周</span><span class="c-tone neg">吐槽</span></div>
+            <p>图片搜索那个“同款”真的别信，传一张 4cm 罗口的图，第三行给我推 2.5cm 的船袜，完全不是一回事。</p>
+            <div class="c-ref">指向：<a href="/#guide">体验指南第 3 步</a></div>
+          </div>
+          <div class="cmt">
+            <div class="c-top"><span class="c-avatar" aria-hidden="true">K</span><span class="c-name">Kite_07</span><span class="c-tone mid">补充</span></div>
+            <p>10 月 30 号我也试了两次上传，交集那部分确实靠谱，重复率大概四成，和我记录的对得上。</p>
+            <div class="c-ref">指向：<a href="/#analysis">深度解析·图片搜索段</a></div>
+          </div>
+          <div class="cmt">
+            <div class="c-top"><span class="c-avatar" aria-hidden="true">小</span><span class="c-name">小满</span><span class="c-tone">中性</span></div>
+            <p>我一直以为是把两个词打错了。看了解析才知道商品页占了前十二位里的八个，引擎词只是限定。</p>
+            <div class="c-ref">指向：<a href="/#analysis">深度解析·构成核对表</a></div>
+          </div>
+          <div class="cmt">
+            <div class="c-top"><span class="c-avatar" aria-hidden="true">布</span><span class="c-name">布丁不加糖</span><span class="c-tone neg">质疑</span></div>
+            <p>“选品术语”这个说法我从头到尾没找到出处，群里也没人这么说，感觉是硬凑的解释。</p>
+            <div class="c-ref">指向：<a href="/#faq">FAQ·选品术语条</a></div>
+          </div>
+          <div class="cmt">
+            <div class="c-top"><span class="c-avatar" aria-hidden="true">林</span><span class="c-name">林一</span><span class="c-tone mid">补充</span></div>
+            <p>22–26cm 这个区间是对的，我买的十双装就是标这个，详情页写在规格栏第二行，主图上没有。</p>
+            <div class="c-ref">指向：<a href="/#cats">分类索引·规格</a></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 板块9：相关资讯 -->
+      <section class="section" id="news" aria-labelledby="newsTitle">
+        <div class="sec-head">
+          <h2 id="newsTitle">相关资讯：索引与文档的两条动向</h2>
+        </div>
+        <div class="news">
+          <div class="news-item card">
+            <span class="n-tag">文档版本</span>
+            <h3><a href="/#analysis">Yandex 帮助页 10 月版本微调检索说明</a></h3>
+            <p>10 月版帮助页把“相似图片”的说明从段落改成三项列表，新增了按颜色筛选的入口描述。11 月 1 日抓取的中文翻译页尚未同步。</p>
+            <span class="meta">2026-11-01 · 文档对照</span>
+          </div>
+          <div class="news-item card">
+            <span class="n-tag">索引快照</span>
+            <h3><a href="/#timeline">10-24 至 11-08 商品页占比上升两个点位</a></h3>
+            <p>同一查询两次采样，商品聚合页由 9 条增至 11 条，论坛帖由 5 条降至 3 条，其余类别数量持平。变化幅度小，但方向清晰。</p>
+            <span class="meta">2026-11-06 · 快照对比</span>
+          </div>
+          <div class="news-item card">
+            <span class="n-tag">社区观察</span>
+            <h3><a href="/#comments">V2EX 一条拼接词提问获得 9 条回复</a></h3>
+            <p>10 月 27 日的帖子问“为什么两个不相干的词能一起搜”，回复里有两条提到图片搜索，一条提到选品，其余为调侃。</p>
+            <span class="meta">2026-10-29 · 帖子摘录</span>
+          </div>
+          <div class="news-item card">
+            <span class="n-tag">规格说明</span>
+            <h3><a href="/#cats">白色短袜礼盒装规格页更新罗口标注</a></h3>
+            <p>11 月 4 日有商品详情页在规格栏补充“罗口 4cm”字段，此前只写“中筒”。这是本月第二例同类补充。</p>
+            <span class="meta">2026-11-04 · 详情页记录</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 板块10：补充板块 时间线 -->
+      <section class="section" id="timeline" aria-labelledby="tlTitle">
+        <div class="sec-head">
+          <h2 id="tlTitle">时间线：这个词在中文页面里的出现轨迹</h2>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <span class="t-date">2025-09-17</span>
+            <b>首次可检索到拼接用法</b>
+            <p>一条贴吧回复把两个词写在同一句里，内容为询问图片能否反查袜子同款，未引起回复。</p>
+          </div>
+          <div class="tl-item">
+            <span class="t-date">2026-03-02</span>
+            <b>电商标题开始出现组合写法</b>
+            <p>部分商品页标题在“小白袜”后叠加工具词，属于关键词堆叠，非真实需求表达。</p>
+          </div>
+          <div class="tl-item hot">
+            <span class="t-date">2026-10-27</span>
+            <b>V2EX 提问带动讨论</b>
+            <p>一条提问获得 9 条回复，讨论集中在“两个词为何能一起搜”，图片搜索被提及两次。</p>
+          </div>
+          <div class="tl-item">
+            <span class="t-date">2026-11-06</span>
+            <b>两次快照对比完成</b>
+            <p>商品页占比上升两个点位，论坛帖下降两条，结果结构趋于稳定。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 板块11：相关推荐 -->
+      <section class="section" id="reco" aria-labelledby="recoTitle">
+        <div class="reco-card card">
+          <h2 id="recoTitle">相关推荐：按长尾词继续查</h2>
+          <p class="r-sub">下列标签均来自实际检索输入，点击进入对应板块。</p>
+          <div class="reco-tags">
+            <a href="/#guide">白色短袜图片反查 <span>操作</span></a>
+            <a href="/#cats">纯棉短袜10双装 <span>规格</span></a>
+            <a href="/#analysis">Yandex中文结果分层 <span>判断</span></a>
+            <a href="/#faq">罗口高度怎么量 <span>问答</span></a>
+            <a href="/#comments">拼接词误输入 <span>讨论</span></a>
+            <a href="/#news">Yandex帮助页更新 <span>资讯</span></a>
+            <a href="/#timeline">词条出现轨迹 <span>时间线</span></a>
+            <a href="/#picks">学生白袜礼盒 <span>选品</span></a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 侧栏 -->
+    <aside class="side" aria-label="侧栏导航与速览">
+      <div class="side-card">
+        <h3>本页导航</h3>
+        <nav aria-label="侧栏锚点导航">
+          <ul class="side-nav" id="sideNav">
+            <li><a href="/#overview">词条概览</a></li>
+            <li><a href="/#picks">精选条目</a></li>
+            <li><a href="/#updates">最新更新</a></li>
+            <li><a href="/#cats">分类索引</a></li>
+            <li><a href="/#analysis">深度解析</a></li>
+            <li><a href="/#guide">体验指南</a></li>
+            <li><a href="/#faq">常见问答</a></li>
+            <li><a href="/#comments">用户评论</a></li>
+            <li><a href="/#news">相关资讯</a></li>
+            <li><a href="/#timeline">时间线</a></li>
+            <li><a href="/#reco">相关推荐</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="side-card">
+        <h3>关键数字速览</h3>
+        <ul class="side-list">
+          <li><a href="/#analysis">前 20 条结果商品页 11 条</a><span class="s-date">11-06 采样</span></li>
+          <li><a href="/#guide">两次图片结果交集约 4 成</a><span class="s-date">10-30 测试</span></li>
+          <li><a href="/#cats">罗口高度 2.5cm / 4cm</a><span class="s-date">规格栏</span></li>
+          <li><a href="/#comments">V2EX 提问 9 条回复</a><span class="s-date">10-27</span></li>
+        </ul>
+      </div>
+      <div class="side-card">
+        <h3>数据说明</h3>
+        <p class="side-note">索引采样于 2026-10-24 与 2026-11-06 两次完成，商品规格与价格均为示例数据，仅用于说明判断方法，不构成购买建议。</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<!-- 页脚 -->
+<footer class="footer" id="footer">
+  <div class="wrap">
+    <div class="f-top">
+      <div>
+        <div class="f-brand">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <rect width="64" height="64" rx="14" fill="#1a5088"/>
+            <path d="M20 14h10v20c0 4 3 7 7 7s7-3 7-7V14h10v21c0 10-7 17-17 17S20 45 20 35z" fill="#f5f7fa"/>
+            <circle cx="46" cy="18" r="5" fill="#e8542f"/>
+          </svg>
+          <b>小白袜yandex</b>
+        </div>
+        <p class="f-slogan">把搜索框里的零散痕迹，整理成能核对的条目层级。</p>
+      </div>
+      <div>
+        <h4>内容频道</h4>
+        <ul class="f-links">
+          <li><a href="/#overview">词条概览</a></li>
+          <li><a href="/#picks">精选条目</a></li>
+          <li><a href="/#updates">最新更新</a></li>
+          <li><a href="/#analysis">深度解析</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>工具与方法</h4>
+        <ul class="f-links">
+          <li><a href="/#guide">体验指南</a></li>
+          <li><a href="/#cats">分类索引</a></li>
+          <li><a href="/#faq">常见问答</a></li>
+          <li><a href="/#reco">相关推荐</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>社区与记录</h4>
+        <ul class="f-links">
+          <li><a href="/#comments">用户评论</a></li>
+          <li><a href="/#news">相关资讯</a></li>
+          <li><a href="/#timeline">时间线</a></li>
+          <li><a href="/#footer">页尾信息</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>示例数据说明：页面内商品规格、价格与索引采样数量均为演示用示例，日期以 2026-11-08 为基准。更新时间 2026-11-08，对应“深度解析”核对表与“最新更新”首条。</span>
+      <span>© 2026 小白袜yandex · 内容仅供检索观察参考</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="回到顶部" title="回到顶部">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+    <path d="M9 14V4M4.5 8.5L9 4l4.5 4.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<script>
+(function(){
+  // 搜索本地索引
+  var index = [
+    {t:'词条概览：组合搜索词的四层构成', h:'/#overview'},
+    {t:'精选条目：本周值得先看的四个页面', h:'/#picks'},
+    {t:'最新更新：近两周的条目变动', h:'/#updates'},
+    {t:'分类索引：按检索意图分组', h:'/#cats'},
+    {t:'深度解析：结果分层与可核对结构表', h:'/#analysis'},
+    {t:'体验指南：五步核对同款白袜', h:'/#guide'},
+    {t:'常见问答：检索与辨别', h:'/#faq'},
+    {t:'用户评论：六条真实语气的摘录', h:'/#comments'},
+    {t:'相关资讯：索引与文档的两条动向', h:'/#news'},
+    {t:'时间线：词条出现轨迹', h:'/#timeline'},
+    {t:'相关推荐：按长尾词继续查', h:'/#reco'},
+    {t:'白色短袜图片反查', h:'/#guide'},
+    {t:'纯棉短袜10双装', h:'/#cats'},
+    {t:'罗口高度怎么量', h:'/#faq'},
+    {t:'Yandex中文结果分层', h:'/#analysis'},
+    {t:'Yandex帮助页更新', h:'/#news'},
+    {t:'拼接词误输入', h:'/#comments'},
+    {t:'学生白袜礼盒', h:'/#picks'},
+    {t:'词条出现轨迹', h:'/#timeline'}
+  ];
+  var input = document.getElementById('siteSearch');
+  var pop = document.getElementById('searchPop');
+
+  function render(q){
+    var v = q.trim().toLowerCase();
+    pop.innerHTML = '';
+    if(!v){
+      pop.classList.remove('on');
+      return;
+    }
+    var res = index.filter(function(it){ return it.t.toLowerCase().indexOf(v) > -1; }).slice(0,8);
+    if(res.length === 0){
+      var e = document.createElement('div');
+      e.className = 'sp-empty';
+      e.textContent = '没有找到与“' + q.trim() + '”匹配的条目，换个词试试。';
+      pop.appendChild(e);
+    } else {
+      res.forEach(function(it){
+        var a = document.createElement('a');
+        a.className = 'sp-item';
+        a.href = it.h;
+        a.textContent = it.t;
+        pop.appendChild(a);
+      });
+    }
+    pop.classList.add('on');
+  }
+
+  input.addEventListener('input', function(){ render(input.value); });
+  input.addEventListener('focus', function(){ if(input.value.trim()) render(input.value); });
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.search')) pop.classList.remove('on');
+  });
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ pop.classList.remove('on'); input.blur(); }
+  });
+
+  // 移动端菜单
+  var menuBtn = document.getElementById('menuBtn');
+  var mobileNav = document.getElementById('mobileNav');
+  menuBtn.addEventListener('click', function(){
+    var open = mobileNav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuBtn.setAttribute('aria-label', open ? '关闭导航菜单' : '打开导航菜单');
+  });
+  mobileNav.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){
+      mobileNav.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded','false');
+      menuBtn.setAttribute('aria-label','打开导航菜单');
+    }
+  });
+
+  // 回到顶部
+  var toTop = document.getElementById('toTop');
+  function onScroll(){
+    if(window.scrollY > 420){ toTop.classList.add('on'); }
+    else { toTop.classList.remove('on'); }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  toTop.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  // 侧栏滚动高亮
+  var links = Array.prototype.slice.call(document.querySelectorAll('#sideNav a'));
+  var targets = links.map(function(a){
+    var id = a.getAttribute('href').replace('/#','');
+    return document.getElementById(id);
+  }).filter(Boolean);
+
+  function highlight(){
+    var offset = 120;
+    var cur = null;
+    targets.forEach(function(sec){
+      var r = sec.getBoundingClientRect();
+      if(r.top <= offset) cur = sec;
+    });
+    links.forEach(function(a){ a.classList.remove('active'); });
+    if(cur){
+      var act = links.filter(function(a){
+        return a.getAttribute('href') === '/#' + cur.id;
+      })[0];
+      if(act) act.classList.add('active');
+    }
+  }
+  window.addEventListener('scroll', highlight, {passive:true});
+  highlight();
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "小白袜yandex",
+  "description": "围绕小白袜yandex检索现象的索引观察，整理Yandex结果分层、词条来源与可核对判断方法。",
+  "inLanguage": "zh-CN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Yandex 搜索结果里为什么商品页排得比帮助文档靠前？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "小白袜属于商品实体，标题与描述里含颜色、数量、规格等强匹配词，召回分数高于工具类文档。帮助文档的标题多以“搜索帮助”“图片搜索”开头，与品类词匹配弱，因此集中在第 13 位之后。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "白色短袜的罗口高度一般怎么标注？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "国产女袜常见 2.5cm 与 4cm 两档，标注位置在商品详情页的“规格”栏。10 双装礼盒多数统一为 4cm，单双装会出现 2.5cm 的短口款。买前看详情页参数比看主图可靠。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "图片搜索找到的“同款”可以直接下单吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能只看第一行。前两行重复率约七成，第 3 行之后降到三成多。至少上传两次取交集，再比对织纹密度与罗口高度，两项都对上才接近同款。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "论坛里说这是“选品术语”，可信吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "目前没有群名、日期或截图支撑，属于推测层。可核对的是操作记录类说法，例如上传平铺图看相似结果，这类描述带了具体步骤，可以复现。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "组合词在中文索引里有稳定词条吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "没有。截至 2026-11-08 的采样，未发现百科或词典类条目，结果以商品页与论坛帖为主。这决定了它更适合当检索现象观察，而不是当固定概念引用。"
+      }
+    }
+  ]
+}
+</script>
+</body>
+                                                                                                                 </html>
